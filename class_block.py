@@ -16,7 +16,6 @@ class CBlock(object):
 
     def draw(self, screen, x, y, size, highest_point):
         rgb = int(self.draw_perlin_noise(highest_point))
-        print(rgb)
         color = (rgb, rgb, rgb)
         pygame.draw.rect(screen, color, (x, y, size, size))
 

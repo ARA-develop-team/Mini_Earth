@@ -25,7 +25,7 @@ grid = perlin_noise.create_random_grid()
 
 for column in range(num_vertical):
     for new_block in range(num_horizontal):
-        block_list.append(CBlock(new_x, new_y, 10, int(perlin_noise.perlin_noise(new_x + 5, new_y + 5, grid) + 100) ,
+        block_list.append(CBlock(new_x, new_y, 10, int((perlin_noise.perlin_noise(new_x + 5, new_y + 5, grid) * 150) + 100) ,
                                  random.randint(99, 101), 10, 10, 10))
         new_x += block_size
     new_y += block_size
@@ -58,12 +58,17 @@ while run:
             x_cam += 10
             y_cam += 10
 
+
+
     window.fill((47, 79, 79))
+
+
     for block in block_list:
         if block.x + block.size > x_cam and block.x < x_cam + length_cam and block.y + block.size > y_cam and block.y < y_cam + height_cam:
             x = (block.x - x_cam) * (window_x / length_cam)
             y = (block.y - y_cam) * (window_y / height_cam)
             size = window_x / (length_cam / block.size)
-            block.draw(window, x, y, size, 300)
+            block.draw(window, x, y, size + 1, 300)
+
     pygame.display.update()
 pygame.quit()
