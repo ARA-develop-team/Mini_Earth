@@ -13,11 +13,14 @@ class CBlock(object):
         self.cloud_concentration = clouds
         self.vegetation = []
         self.isDay = True
+        self.counter = 0
 
     def draw(self, screen, x, y, size, highest_point):
-        rgb = int(self.draw_perlin_noise(highest_point))
-        print(rgb)
-        color = (rgb, rgb, rgb)
+        # rgb = int(self.draw_perlin_noise(highest_point))
+        # color = (rgb, rgb, rgb)
+        # print(rgb)
+
+        color = self.draw_default()
         pygame.draw.rect(screen, color, (x, y, size, size))
 
     def draw_perlin_noise(self, highest_point):
@@ -30,6 +33,10 @@ class CBlock(object):
 
     def draw_default(self):
         color = (139, 69, 19)
-        if self.height_water > 100:
+        # if self.height_water > 100:
+        #     color = (30, 144, 255)
+        self.counter += 1
+        if self.height_ground < self.counter:
             color = (30, 144, 255)
+
         return color
