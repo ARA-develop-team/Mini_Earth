@@ -9,8 +9,8 @@ window = pygame.display.set_mode((window_x, window_y))
 
 x_cam = 0
 y_cam = 0
-length_cam = window_x
-height_cam = window_y
+length_cam = 1000
+height_cam = 1000
 zoom = 1
 
 pygame.init()
@@ -20,12 +20,20 @@ block_size = 10
 block_list = []
 new_x = 0
 new_y = 0
+octava_number = 5
+grid_list = []
 
-grid = perlin_noise.create_random_grid()
+
+for number in range(octava_number):
+    grid_list.append(perlin_noise.create_random_grid())
 
 for column in range(num_vertical):
     for new_block in range(num_horizontal):
-        block_list.append(CBlock(new_x, new_y, 10, int((perlin_noise.perlin_noise(new_x + 5, new_y + 5, grid) * 150) + 100) ,
+        height_block = 0
+        for grid in grid_list:
+            height_block += int(((perlin_noise.perlin_noise(new_x + 5, new_y + 5, grid) * 20 ** 2) + 100) / octava_number)
+
+        block_list.append(CBlock(new_x, new_y, 10, height_block,
                                  random.randint(99, 101), 10, 10, 10))
         new_x += block_size
     new_y += block_size
