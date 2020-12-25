@@ -19,15 +19,13 @@ block_size = 10
 block_list = []
 new_x = 0
 new_y = 0
+
 for column in range(num_vertical):
     for new_block in range(num_horizontal):
-        block_list.append(CBlock(new_x, new_y, 10, 101, random.randint(99, 101), 10, 10, 10))
+        block_list.append(CBlock(new_x, new_y, 10, random.randint(1, 200), random.randint(99, 101), 10, 10, 10))
         new_x += block_size
     new_y += block_size
     new_x = 0
-# block_list.append(CBlock(100, 100, 10, 101, 101, 10, 10, 10))
-# block_list.append(CBlock(100, 110, 10, 101, 10, 10, 10, 10))
-# block_list.append(CBlock(100, 120, 10, 101, 101, 10, 10, 10))
 
 run = True
 while run:
@@ -62,6 +60,6 @@ while run:
             x = (block.x - x_cam) * (window_x / length_cam)
             y = (block.y - y_cam) * (window_y / height_cam)
             size = window_x / (length_cam / block.size)
-            block.draw(window, x, y, size)
+            block.draw(window, x, y, size, 200)
     pygame.display.update()
 pygame.quit()
