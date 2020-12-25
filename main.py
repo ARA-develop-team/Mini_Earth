@@ -1,6 +1,7 @@
 import pygame
 import random
 from class_block import CBlock
+import perlin_noise
 
 window_x = 500
 window_y = 500
@@ -20,9 +21,12 @@ block_list = []
 new_x = 0
 new_y = 0
 
+grid = perlin_noise.create_random_grid()
+
 for column in range(num_vertical):
     for new_block in range(num_horizontal):
-        block_list.append(CBlock(new_x, new_y, 10, random.randint(1, 200), random.randint(99, 101), 10, 10, 10))
+        block_list.append(CBlock(new_x, new_y, 10, int(perlin_noise.perlin_noise(new_x + 5, new_y + 5, grid) + 100) ,
+                                 random.randint(99, 101), 10, 10, 10))
         new_x += block_size
     new_y += block_size
     new_x = 0
@@ -60,6 +64,6 @@ while run:
             x = (block.x - x_cam) * (window_x / length_cam)
             y = (block.y - y_cam) * (window_y / height_cam)
             size = window_x / (length_cam / block.size)
-            block.draw(window, x, y, size, 200)
+            block.draw(window, x, y, size, 300)
     pygame.display.update()
 pygame.quit()

@@ -15,12 +15,16 @@ class CBlock(object):
         self.isDay = True
 
     def draw(self, screen, x, y, size, highest_point):
-        rgb = self.draw_perlin_noise(highest_point)
-
+        rgb = int(self.draw_perlin_noise(highest_point))
+        print(rgb)
         color = (rgb, rgb, rgb)
         pygame.draw.rect(screen, color, (x, y, size, size))
 
     def draw_perlin_noise(self, highest_point):
+        if self.height_ground < 1:
+            self.height_ground = 1
+        if self.height_ground > 300:
+            self.height_ground = 299
         percent = (self.height_ground * 100) / highest_point
         return (255 * percent) / 100
 

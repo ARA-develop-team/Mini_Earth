@@ -1,11 +1,12 @@
 import random
+import math
 
 
 def perlin_noise(x, y, grid):
     x = x / 100
     y = y / 100
-    x_sect = int(x)
-    y_sect = int(y)
+    x_sect = int(x) - 1
+    y_sect = int(y) - 1
     x_loc = x - x_sect
     y_loc = y - y_sect
 
@@ -43,15 +44,16 @@ def smootherstep(x):
 
 
 def scalar_product(vect_a, vect_b):
-    return vect_a[0] * vect_b[0] + vect_a[1] * vect_b[1]
+    return (vect_a[0] * vect_b[0]) + (vect_a[1] * vect_b[1])
 
 
 def create_random_grid():
     grid = []
     for x in range(10):
+        grid.append([])
         for y in range(10):
             degree = random.randint(0, 360)
-            grid.append(convert_degree_in_vector(degree))
+            grid[x].append(convert_degree_in_vector(degree))
     return grid
 
 
