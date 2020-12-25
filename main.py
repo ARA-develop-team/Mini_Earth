@@ -67,7 +67,6 @@ while run:
             y_cam += 10
 
 
-
     window.fill((47, 79, 79))
 
 
