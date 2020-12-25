@@ -13,7 +13,7 @@ class CBlock(object):
         self.cloud_concentration = clouds
         self.vegetation = []
         self.isDay = True
-        self.counter = 0
+        self.counter = 100
 
     def draw(self, screen, x, y, size, highest_point):
         # rgb = int(self.draw_perlin_noise(highest_point))
@@ -35,7 +35,7 @@ class CBlock(object):
         color = (139, 69, 19)
         # if self.height_water > 100:
         #     color = (30, 144, 255)
-        self.counter += 1
+        # self.counter += 1
         if self.height_ground < self.counter:
             color = (30, 144, 255)
 
