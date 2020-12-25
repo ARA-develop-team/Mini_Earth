@@ -14,9 +14,18 @@ class CBlock(object):
         self.vegetation = []
         self.isDay = True
 
-    def draw(self, screen, x, y, size):
+    def draw(self, screen, x, y, size, highest_point):
+        rgb = self.draw_perlin_noise(highest_point)
+
+        color = (rgb, rgb, rgb)
+        pygame.draw.rect(screen, color, (x, y, size, size))
+
+    def draw_perlin_noise(self, highest_point):
+        percent = (self.height_ground * 100) / highest_point
+        return (255 * percent) / 100
+
+    def draw_default(self):
         color = (139, 69, 19)
         if self.height_water > 100:
             color = (30, 144, 255)
-        pygame.draw.rect(screen, color, (x, y, size, size))
-
+        return color
