@@ -16,11 +16,11 @@ class CBlock(object):
         self.counter = 1
 
     def draw(self, screen, x, y, size, highest_point):
-        # rgb = int(self.draw_perlin_noise(highest_point))
-        # color = (rgb, rgb, rgb)
+        rgb = int(self.draw_perlin_noise(highest_point))
+        color = (rgb, rgb, rgb)
         # print(rgb)
 
-        color = self.draw_default()
+        # color = self.draw_default()
         pygame.draw.rect(screen, color, (x, y, size, size))
 
     def draw_perlin_noise(self, highest_point):
@@ -35,7 +35,7 @@ class CBlock(object):
         color = (139, 69, 19)
         # if self.height_water > 100:
         #     color = (30, 144, 255)
-        self.counter += 10
+        # self.counter += 10
         if self.height_ground < self.counter:
             color = (30, 144, 255)
 
