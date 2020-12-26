@@ -52,8 +52,6 @@ class CBlock(object):
         if self.height_ground < water_level:   # temporarily
             self.height_water = water_level - self.height_ground
 
-        color = (139, 69, 19)
-
         variation = 20    # height difference of water
         if self.height_water >= 1:
             if self.height_water < variation:
