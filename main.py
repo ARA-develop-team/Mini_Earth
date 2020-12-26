@@ -13,8 +13,8 @@ height_cam = window_y * 4
 zoom = 1
 
 pygame.init()
-num_horizontal = 100
-num_vertical = 100
+num_horizontal = 300
+num_vertical = 300
 block_size = 10
 block_list = []
 new_x = 0
@@ -36,9 +36,9 @@ for column in range(num_vertical):
         # for grid in grid_list:
         #     height_block += int(((perlin_noise.perlin_noise(new_x + 5, new_y + 5, grid, 50)
         #                           * 20 ** 2) + 100) / octave_number)
-        octave1 = perlin_noise.perlin_noise(new_x + 5, new_y + 5, grid1, 200) * 20 ** 2 + 100
-        octave2 = perlin_noise.perlin_noise(new_x + 5, new_y + 5, grid2, 100) * 10 ** 2 + 100
-        octave3 = perlin_noise.perlin_noise(new_x + 5, new_y + 5, grid3, 50) * 10 ** 2 + 100
+        octave1 = perlin_noise.perlin_noise(new_x + 5, new_y + 5, grid1, num_horizontal * block_size) * 20 ** 2 + 100
+        octave2 = perlin_noise.perlin_noise(new_x + 5, new_y + 5, grid2, num_horizontal * block_size) * 10 ** 2 + 100
+        octave3 = perlin_noise.perlin_noise(new_x + 5, new_y + 5, grid3, num_horizontal * block_size) * 10 ** 2 + 100
 
         height_block = (octave1 / 2) + (octave2 / 2) + (octave3 / 2)
 
@@ -57,7 +57,22 @@ while run:
     for e in pygame.event.get():
         if e.type == pygame.QUIT:
             run = False
-
+        if e.type == pygame.MOUSEBUTTONDOWN:
+            if e.button == 4:
+                if length_cam > 1 and height_cam > 1:
+                    new_length_cam = length_cam / 1.2
+                    new_height_cam = height_cam / 1.2
+                    x_cam += (length_cam - new_length_cam) / 2
+                    y_cam += (height_cam - new_height_cam) / 2
+                    length_cam = new_length_cam
+                    height_cam = new_height_cam
+            if e.button == 5:
+                new_length_cam = length_cam * 1.2
+                new_height_cam = height_cam * 1.2
+                x_cam -= (new_length_cam - length_cam) / 2
+                y_cam -= (new_height_cam - height_cam) / 2
+                length_cam = new_length_cam
+                height_cam = new_height_cam
     keys = pygame.key.get_pressed()
     if keys[pygame.K_d]:
         x_cam += 10

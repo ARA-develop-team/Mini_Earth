@@ -2,7 +2,8 @@ import random
 import math
 
 
-def perlin_noise(x, y, grid, grid_pixel_size):
+def perlin_noise(x, y, grid, map_pixel_size):
+    grid_pixel_size = map_pixel_size / (len(grid) - 1)
     #print('поиск в точке - ' + str(x) + ' ' + str(y))
     x = x / grid_pixel_size
     y = y / grid_pixel_size
