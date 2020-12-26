@@ -1,10 +1,9 @@
 import pygame
-import random
 from class_block import CBlock
 import perlin_noise
 
-window_x = 500
-window_y = 500
+window_x = 1000
+window_y = 1000
 window = pygame.display.set_mode((window_x, window_y))
 
 x_cam = 0
@@ -24,8 +23,6 @@ octave_number = 5
 grid_list = []
 
 highest_point = 0
-
-
 
 # for number in range(octave_number):
 #     grid_list.append(perlin_noise.create_random_grid(20))
