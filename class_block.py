@@ -6,7 +6,13 @@ class CBlock(object):
                 "Cobalt blue": (0, 71, 171),
                 "Green-blue Crayola": (17, 100, 180),
                 "Blue Klein": (58, 117, 196),
-                "Blue-gray Crayola": (102, 153, 204)}
+                "Blue-gray Crayola": (102, 153, 204),
+                "Pear green": (209, 226, 49),
+                "Verdejo green": (52, 201, 36),
+                "Muslim green": (0, 153, 0),
+                "Green": (0, 128, 0),
+                "Golden birch": (218, 165, 32),
+                "Redhead": (215, 125, 49)}
 
     def __init__(self, x, y, size, height_ground, height_water, temp_surface, temp_air, clouds):
         self.x = x
@@ -59,5 +65,19 @@ class CBlock(object):
                 color = self.colorbox["Cobalt blue"]
             else:
                 color = self.colorbox["Traffic blue"]
+        else:
+            elevation = self.height_ground - water_level
+            if elevation < variation:
+                color = self.colorbox["Green"]
+            elif elevation < variation * 2:
+                color = self.colorbox["Muslim green"]
+            elif elevation < variation * 3:
+                color = self.colorbox["Verdejo green"]
+            elif elevation < variation * 4:
+                color = self.colorbox["Pear green"]
+            elif elevation < variation * 5:
+                color = self.colorbox["Golden birch"]
+            else:
+                color = self.colorbox["Redhead"]
 
         return color
