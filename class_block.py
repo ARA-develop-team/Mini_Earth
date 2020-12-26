@@ -7,10 +7,11 @@ class CBlock(object):
                 "Green-blue Crayola": (17, 100, 180),
                 "Blue Klein": (58, 117, 196),
                 "Blue-gray Crayola": (102, 153, 204),
-                "Pear green": (209, 226, 49),
-                "Verdejo green": (52, 201, 36),
-                "Muslim green": (0, 153, 0),
+
                 "Green": (0, 128, 0),
+                "Muslim green": (0, 153, 0),
+                "Verdejo green": (52, 201, 36),
+                "Pear green": (209, 226, 49),
                 "Golden birch": (218, 165, 32),
                 "Redhead": (215, 125, 49)}
 
