@@ -35,7 +35,7 @@ class CBlock(object):
         color = (139, 69, 19)
         # if self.height_water > 100:
         #     color = (30, 144, 255)
-        self.counter += 1
+        self.counter += 10
         if self.height_ground < self.counter:
             color = (30, 144, 255)
 

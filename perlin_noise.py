@@ -2,10 +2,10 @@ import random
 import math
 
 
-def perlin_noise(x, y, grid):
+def perlin_noise(x, y, grid, grid_pixel_size):
     #print('поиск в точке - ' + str(x) + ' ' + str(y))
-    x = x / 100
-    y = y / 100
+    x = x / grid_pixel_size
+    y = y / grid_pixel_size
     #print('x y поделени на 100 - ' + str(x) + ' ' + str(y))
 
     x_sect = int(x)
@@ -58,11 +58,11 @@ def scalar_product(vect_a, vect_b):
     return (vect_a[0] * vect_b[0]) + (vect_a[1] * vect_b[1])
 
 
-def create_random_grid():
+def create_random_grid(grid_number):
     grid = []
-    for x in range(11):
+    for x in range(grid_number + 1):
         grid.append([])
-        for y in range(11):
+        for y in range(grid_number + 1):
             degree = random.randint(0, 360)
             grid[x].append(convert_degree_in_vector(degree))
     return grid
