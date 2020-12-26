@@ -3,7 +3,7 @@ from class_block import CBlock
 import perlin_noise
 
 window_x = 1000
-window_y = 500
+window_y = 1000
 window = pygame.display.set_mode((window_x, window_y))
 
 x_cam = 0
