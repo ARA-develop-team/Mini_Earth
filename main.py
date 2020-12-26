@@ -23,17 +23,27 @@ new_y = 0
 octave_number = 5
 grid_list = []
 
+
 highest_point = 0
 
-for number in range(octave_number):
-    grid_list.append(perlin_noise.create_random_grid())
+
+# for number in range(octave_number):
+#     grid_list.append(perlin_noise.create_random_grid(20))
+grid1 = perlin_noise.create_random_grid(5)
+grid2 = perlin_noise.create_random_grid(10)
+grid3 = perlin_noise.create_random_grid(20)
 
 for column in range(num_vertical):
     for new_block in range(num_horizontal):
-        height_block = 0
-        for grid in grid_list:
-            height_block += int(((perlin_noise.perlin_noise(new_x + 5, new_y + 5, grid)
-                                  * 20 ** 2) + 100) / octave_number)
+        # height_block = 0
+        # for grid in grid_list:
+        #     height_block += int(((perlin_noise.perlin_noise(new_x + 5, new_y + 5, grid, 50)
+        #                           * 20 ** 2) + 100) / octave_number)
+        octave1 = perlin_noise.perlin_noise(new_x + 5, new_y + 5, grid1, 200) * 20 ** 2 + 100
+        octave2 = perlin_noise.perlin_noise(new_x + 5, new_y + 5, grid2, 100) * 10 ** 2 + 100
+        octave3 = perlin_noise.perlin_noise(new_x + 5, new_y + 5, grid3, 50) * 10 ** 2 + 100
+
+        height_block = (octave1 / 2) + (octave2 / 2) + (octave3 / 2)
 
         block_list.append(CBlock(new_x, new_y, 10, height_block, 0, 10, 10, 10))
         if height_block > highest_point:

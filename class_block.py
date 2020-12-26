@@ -3,7 +3,7 @@ import pygame
 
 class CBlock(object):
     colorbox = {"Traffic blue": (6, 57, 113),
-                "Capri blue": (27, 85, 131),
+                "Cobalt blue": (0, 71, 171),
                 "Green-blue Crayola": (17, 100, 180),
                 "Blue Klein": (58, 117, 196),
                 "Blue-gray Crayola": (102, 153, 204)}
@@ -41,9 +41,9 @@ class CBlock(object):
         return (255 * percent) / 100
 
     def draw_elevation_map(self):
-
-        if self.height_ground < 100:   # temporarily
-            self.height_water = 100 - self.height_ground
+        water_level = 150
+        if self.height_ground < water_level:   # temporarily
+            self.height_water = water_level - self.height_ground
 
         color = (139, 69, 19)
 
@@ -56,7 +56,7 @@ class CBlock(object):
             elif self.height_water < variation * 3:
                 color = self.colorbox["Green-blue Crayola"]
             elif self.height_water < variation * 4:
-                color = self.colorbox["Capri blue"]
+                color = self.colorbox["Cobalt blue"]
             else:
                 color = self.colorbox["Traffic blue"]
 
