@@ -35,8 +35,7 @@ for column in range(num_vertical):
             height_block += int(((perlin_noise.perlin_noise(new_x + 5, new_y + 5, grid)
                                   * 20 ** 2) + 100) / octave_number)
 
-        block_list.append(CBlock(new_x, new_y, 10, height_block,
-                                 random.randint(99, 101), 10, 10, 10))
+        block_list.append(CBlock(new_x, new_y, 10, height_block, 0, 10, 10, 10))
         if height_block > highest_point:
             highest_point = height_block
 
