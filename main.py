@@ -2,19 +2,19 @@ import pygame
 from class_block import CBlock
 import perlin_noise
 
-window_x = 1000
+window_x = 500
 window_y = 500
 window = pygame.display.set_mode((window_x, window_y))
 
 x_cam = 0
 y_cam = 0
-length_cam = window_x * 4
-height_cam = window_y * 4
+length_cam = 3000
+height_cam = 3000
 zoom = 1
 
-pygame.init()
-num_horizontal = 300
-num_vertical = 300
+
+num_horizontal = 100
+num_vertical = 100
 block_size = 10
 block_list = []
 new_x = 0
@@ -24,18 +24,12 @@ grid_list = []
 
 highest_point = 0
 
-# for number in range(octave_number):
-#     grid_list.append(perlin_noise.create_random_grid(20))
 grid1 = perlin_noise.create_random_grid(5)
 grid2 = perlin_noise.create_random_grid(10)
 grid3 = perlin_noise.create_random_grid(20)
 
 for column in range(num_vertical):
     for new_block in range(num_horizontal):
-        # height_block = 0
-        # for grid in grid_list:
-        #     height_block += int(((perlin_noise.perlin_noise(new_x + 5, new_y + 5, grid, 50)
-        #                           * 20 ** 2) + 100) / octave_number)
         octave1 = perlin_noise.perlin_noise(new_x + 5, new_y + 5, grid1, num_horizontal * block_size) * 20 ** 2 + 100
         octave2 = perlin_noise.perlin_noise(new_x + 5, new_y + 5, grid2, num_horizontal * block_size) * 10 ** 2 + 100
         octave3 = perlin_noise.perlin_noise(new_x + 5, new_y + 5, grid3, num_horizontal * block_size) * 10 ** 2 + 100
@@ -52,6 +46,7 @@ for column in range(num_vertical):
 
 clock = pygame.time.Clock()
 run = True
+pygame.init()
 while run:
     clock.tick(60)
     for e in pygame.event.get():
@@ -100,22 +95,25 @@ while run:
     window.fill((47, 79, 79))
 
     for block in block_list:
+
         if block.x + block.size > x_cam and block.x < x_cam + length_cam \
                 and block.y + block.size > y_cam and block.y < y_cam + height_cam:
-            # x = (block.x - x_cam) * (window_x / length_cam)
-            # y = (block.y - y_cam) * (window_y / height_cam)
-            # size = window_x / (length_cam / block.size)
-            #print("Блок находтса на кординате - {}, {}".format(block.x, block.y))
             x_loc = block.x - x_cam
             y_loc = block.y - y_cam
-            #print("кординати камери - {}, {}".format(x_cam, y_cam))
-            #print("локальные кординати - {}, {}".format(x_loc, y_loc))
             x = (x_loc / length_cam) * window_x
             y = (y_loc / height_cam) * window_y
-            #print("размери камери - {}, {}".format(length_cam, height_cam))
-            #print("x, y - {}, {}".format(x, y))
             size = (block.size / length_cam) * window_x
-            #print("size - {}".format(size))
             block.draw(window, x, y, size + 1, highest_point)
     pygame.display.update()
 pygame.quit()
+
+
+# x = (block.x - x_cam) * (window_x / length_cam)
+# y = (block.y - y_cam) * (window_y / height_cam)
+# size = window_x / (length_cam / block.size)
+# print("Блок находтса на кординате - {}, {}".format(block.x, block.y))
+# print("кординати камери - {}, {}".format(x_cam, y_cam))
+# print("локальные кординати - {}, {}".format(x_loc, y_loc))
+# print("размери камери - {}, {}".format(length_cam, height_cam))
+# print("x, y - {}, {}".format(x, y))
+# print("size - {}".format(size))
