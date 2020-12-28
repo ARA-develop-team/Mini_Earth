@@ -25,13 +25,13 @@ window = pygame.display.set_mode((window_x, window_y))
 
 x_cam = 0
 y_cam = 0
-length_cam = window_x * 4
-height_cam = window_y * 4
+length_cam = window_x * 1
+height_cam = window_y * 1
 zoom = 1
 
 pygame.init()
-num_horizontal = 300
-num_vertical = 300
+num_horizontal = 100
+num_vertical = 100
 block_size = 10
 block_list = []
 new_x = 0
