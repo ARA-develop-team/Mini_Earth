@@ -29,7 +29,6 @@ length_cam = 1000
 height_cam = 1000
 zoom = 1
 
-
 num_horizontal = 100
 num_vertical = 100
 block_size = 10
@@ -61,7 +60,7 @@ for column in range(num_vertical):
     for new_block in range(num_horizontal):
         octave1 = perlin_noise.perlin_noise(new_x + 5, new_y + 5, grid1, num_horizontal * block_size) * 20 ** 2 + 100
         octave2 = perlin_noise.perlin_noise(new_x + 5, new_y + 5, grid2, num_horizontal * block_size) * 10 ** 2 + 100
-        octave3 = perlin_noise.perlin_noise(new_x + 5, new_y + 5, grid3, num_horizontal * block_size) * 10 ** 2 + 100
+        octave3 = perlin_noise.perlin_noise(new_x + 5, new_y + 5, grid3, num_horizontal * block_size) * 13 ** 2 + 100
 
         height_block = (octave1 / 2) + (octave2 / 2) + (octave3 / 2)
 
