@@ -28,8 +28,9 @@ class CBlock(object):
         self.isDay = True
         self.filter = "elevation map"
 
-    def draw(self, screen, x, y, size, highest_point):
+    def draw(self, screen, x, y, size, highest_point, filter):
         color = (0, 0, 0)
+        self.filter = filter
 
         if self.filter == "perlin noise":
             rgb = int(self.draw_perlin_noise(highest_point))
@@ -49,11 +50,11 @@ class CBlock(object):
 
     def draw_elevation_map(self):
         water_level = 150
-        if self.height_ground < water_level:   # temporarily
-            self.height_water = water_level - self.height_ground
+        # if self.height_ground < water_level:   # temporarily
+        #     self.height_water = water_level - self.height_ground
 
         variation = 20    # height difference of water
-        if self.height_water >= 1:
+        if self.height_water >= 0.0001:
             if self.height_water < variation:
                 color = self.colorbox["Blue-gray Crayola"]
             elif self.height_water < variation * 2:
