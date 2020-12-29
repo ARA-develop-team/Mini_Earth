@@ -19,8 +19,8 @@ def blocks_visualization(block_thread_list, window_thread, window_x_thread, wind
             block.draw(window_thread, x, y, size + 1, highest_point_thread, filter)
 
 
-window_x = 500
-window_y = 500
+window_x = 1000
+window_y = 1000
 window = pygame.display.set_mode((window_x, window_y))
 
 x_cam = 0
@@ -29,8 +29,8 @@ length_cam = 1000
 height_cam = 1000
 zoom = 1
 
-num_horizontal = 100
-num_vertical = 100
+num_horizontal = 300
+num_vertical = 300
 block_size = 10
 block_list = []
 new_x = 0
