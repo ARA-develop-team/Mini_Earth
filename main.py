@@ -19,8 +19,8 @@ def blocks_visualization(block_thread_list, window_thread, window_x_thread, wind
             block.draw(window_thread, x, y, size + 1, highest_point_thread, filter)
 
 
-window_x = 1000
-window_y = 1000
+window_x = 500
+window_y = 500
 window = pygame.display.set_mode((window_x, window_y))
 
 x_cam = 0
@@ -29,8 +29,8 @@ length_cam = 1000
 height_cam = 1000
 zoom = 1
 
-num_horizontal = 300
-num_vertical = 300
+num_horizontal = 100
+num_vertical = 100
 block_size = 10
 block_list = []
 new_x = 0
@@ -42,7 +42,8 @@ threads_number = 10
 highest_point = 0
 extra = 0
 
-filter_list = ["elevation map", "perlin noise"]
+filter_list = ["elevation map", "waves map color", "waves map wb", "perlin noise"]
+# , "perlin noise"
 filter = 0
 
 # for x in range(num_vertical):
@@ -73,6 +74,7 @@ for column in range(num_vertical):
     new_x = 0
 
 block_list[5550].height_water = 100000
+
 
 clock = pygame.time.Clock()
 run = True
