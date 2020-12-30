@@ -8,6 +8,8 @@ class CBlock(object):
                 "Blue Klein": (58, 117, 196),
                 "Blue-gray Crayola": (102, 153, 204),
 
+                "Dark spring green": (0, 100, 0),
+                "Pearl green": (0, 70, 0),
                 "Green": (0, 128, 0),
                 "Muslim green": (0, 153, 0),
                 "Verdejo green": (52, 201, 36),
@@ -49,12 +51,9 @@ class CBlock(object):
         return (255 * percent) / 100
 
     def draw_elevation_map(self):
-        water_level = 150
-        # if self.height_ground < water_level:   # temporarily
-        #     self.height_water = water_level - self.height_ground
 
-        variation = 20    # height difference of water
-        if self.height_water >= 0.0001:
+        variation = 18    # height difference of place
+        if self.height_water > 0:
             if self.height_water < variation:
                 color = self.colorbox["Blue-gray Crayola"]
             elif self.height_water < variation * 2:
@@ -66,16 +65,19 @@ class CBlock(object):
             else:
                 color = self.colorbox["Traffic blue"]
         else:
-            elevation = self.height_ground - water_level
-            if elevation < variation:
+            if self.height_ground < variation * 2:
+                color = self.colorbox["Pearl green"]
+            elif self.height_ground < variation * 4:
+                color = self.colorbox["Dark spring green"]
+            elif self.height_ground < variation * 6:
                 color = self.colorbox["Green"]
-            elif elevation < variation * 2:
+            elif self.height_ground < variation * 8:
                 color = self.colorbox["Muslim green"]
-            elif elevation < variation * 3:
+            elif self.height_ground < variation * 10:
                 color = self.colorbox["Verdejo green"]
-            elif elevation < variation * 4:
+            elif self.height_ground < variation * 12:
                 color = self.colorbox["Pear green"]
-            elif elevation < variation * 5:
+            elif self.height_ground < variation * 14:
                 color = self.colorbox["Golden birch"]
             else:
                 color = self.colorbox["Redhead"]

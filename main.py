@@ -4,7 +4,8 @@ from class_block import CBlock
 import perlin_noise
 import functions_of_interaction_between_blocks as foibb
 
-def blocks_visualization(block_thread_list, window_thread, window_x_thread, window_y_thread,  x_cam_thread,
+
+def blocks_visualization(block_thread_list, window_thread, window_x_thread, window_y_thread, x_cam_thread,
                          y_cam_thread, length_cam_thread, height_cam_thread, highest_point_thread, filter):
     for block in block_thread_list:
         if block.x + block.size > x_cam_thread and block.x < x_cam_thread + length_cam_thread \
@@ -29,8 +30,8 @@ length_cam = 1000
 height_cam = 1000
 zoom = 1
 
-num_horizontal = 300
-num_vertical = 300
+num_horizontal = 100
+num_vertical = 100
 block_size = 10
 block_list = []
 new_x = 0
@@ -48,8 +49,6 @@ filter = 0
 # for x in range(num_vertical):
 #     for y in range(num_horizontal):
 #         block_list.append(CBlock(y * block_size, x * block_size, 10, 100, 0, 10, 10, 10))
-
-
 
 
 grid1 = perlin_noise.create_random_grid(5)
@@ -144,7 +143,8 @@ while run:
 
             draw_thread = threading.Thread(target=blocks_visualization, args=(block_list_for_thread, window, window_x,
                                                                               window_y, x_cam, y_cam, length_cam,
-                                                                              height_cam, highest_point, filter_list[filter]))
+                                                                              height_cam, highest_point,
+                                                                              filter_list[filter]))
             draw_thread_list.append(draw_thread)
             draw_thread.start()
 
