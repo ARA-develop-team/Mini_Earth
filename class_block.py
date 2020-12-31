@@ -46,8 +46,6 @@ class CBlock(object):
         self.future_hw = 0
 
     def draw(self, screen, x, y, size, highest_point, filter):
-        self.height_water += self.future_hw
-        self.future_hw = 0
         color = (0, 0, 0)
         self.filter = filter
 
@@ -169,4 +167,8 @@ class CBlock(object):
                 color = self.colorbox["Golden birch"]
             else:
                 color = self.colorbox["Redhead"]
-        return color
+                return color
+
+    def assignment_of_values(self):
+        self.height_water += self.future_hw
+        self.future_hw = 0
