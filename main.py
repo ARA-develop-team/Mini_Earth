@@ -2,7 +2,7 @@ import pygame
 import threading
 from class_block import CBlock
 import perlin_noise
-import functions_of_interaction_between_blocks as foibb
+import functions_of_interaction_between_blocks as fibb
 
 
 def blocks_visualization(block_thread_list, window_thread, window_x_thread, window_y_thread, x_cam_thread,
@@ -131,7 +131,7 @@ while run:
 
     window.fill((47, 79, 79))
 
-    foibb.water_flow_4(block_list, num_horizontal)
+    fibb.water_flow_4(block_list, num_horizontal)
 
     blocks_for_thread = len(block_list) / threads_number
     block_waiting_list = block_list.copy()
