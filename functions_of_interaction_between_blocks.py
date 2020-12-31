@@ -1,4 +1,3 @@
-
 def water_flow(block1, block2):
     difference = (block1.height_ground + block1.height_water) \
                  - (block2.height_ground + block2.height_water)
@@ -17,26 +16,36 @@ def water_flow(block1, block2):
     else:
         return abs(difference)
 
+
 def water_flow_4(block_list, num_horizontal):
-    for number in range(len(block_list)):
+    while block_list[0].run:
+        for number in range(len(block_list)):
 
-        if number % num_horizontal == num_horizontal - 1:
-            dif1 = water_flow(block_list[number], block_list[number - num_horizontal + 1])
-            dif2 =water_flow(block_list[number], block_list[number - 1])
-        elif number % num_horizontal == 0:
-            dif1 = water_flow(block_list[number], block_list[number + num_horizontal - 1])
-            dif2 = water_flow(block_list[number], block_list[number + 1])
-        else:
-            dif1 = water_flow(block_list[number], block_list[number + 1])
-            dif2 = water_flow(block_list[number], block_list[number - 1])
+            if number % num_horizontal == num_horizontal - 1:
+                dif1 = water_flow(block_list[number], block_list[number - num_horizontal + 1])
+                dif2 = water_flow(block_list[number], block_list[number - 1])
+            elif number % num_horizontal == 0:
+                dif1 = water_flow(block_list[number], block_list[number + num_horizontal - 1])
+                dif2 = water_flow(block_list[number], block_list[number + 1])
+            else:
+                dif1 = water_flow(block_list[number], block_list[number + 1])
+                dif2 = water_flow(block_list[number], block_list[number - 1])
 
-        if 0 <= number <= num_horizontal - 1:
-            dif3 = water_flow(block_list[number], block_list[number + num_horizontal])
-            dif4 = dif3
-        elif len(block_list) - num_horizontal <= number < len(block_list):
-            dif3 = water_flow(block_list[number], block_list[number - num_horizontal])
-            dif4 = dif3
-        else:
-            dif3 = water_flow(block_list[number], block_list[number + num_horizontal])
-            dif4 = water_flow(block_list[number], block_list[number - num_horizontal])
-        block_list[number].wave_counter = dif1 + dif2 + dif3 + dif4
+            if 0 <= number <= num_horizontal - 1:
+                dif3 = water_flow(block_list[number], block_list[number + num_horizontal])
+                dif4 = dif3
+            elif len(block_list) - num_horizontal <= number < len(block_list):
+                dif3 = water_flow(block_list[number], block_list[number - num_horizontal])
+                dif4 = dif3
+            else:
+                dif3 = water_flow(block_list[number], block_list[number + num_horizontal])
+                dif4 = water_flow(block_list[number], block_list[number - num_horizontal])
+            block_list[number].wave_counter = dif1 + dif2 + dif3 + dif4
+
+            block_list[number].color_selection()
+
+
+# def color_correction(block_list):
+#     while block_list[0].run:
+#         for block in block_list:
+#             block.color_selection()
