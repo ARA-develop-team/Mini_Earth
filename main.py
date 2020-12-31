@@ -3,6 +3,7 @@ import threading
 from class_block import CBlock
 import perlin_noise
 import functions_of_interaction_between_blocks as foibb
+import time
 
 
 def blocks_visualization(block_thread_list, window_thread, window_x_thread, window_y_thread, x_cam_thread,
@@ -72,14 +73,14 @@ for column in range(num_vertical):
     new_y += block_size
     new_x = 0
 
-block_list[5550].height_water = 100000
+block_list[2050].height_water = 1000000
 
 
 clock = pygame.time.Clock()
 run = True
 pygame.init()
 while run:
-    clock.tick(60)
+    clock.tick(20)
     for e in pygame.event.get():
         if e.type == pygame.QUIT:
             run = False
@@ -131,7 +132,7 @@ while run:
 
     window.fill((47, 79, 79))
 
-    foibb.water_flow_4(block_list, num_horizontal)
+    foibb.fibb_main(block_list, num_horizontal)
 
     blocks_for_thread = len(block_list) / threads_number
     block_waiting_list = block_list.copy()
@@ -181,6 +182,6 @@ while run:
     #         # print("x, y - {}, {}".format(x, y))
     #         size = (block.size / length_cam) * window_x
     #         # print("size - {}".format(size))
-    #         block.draw(window, x, y, size + 1, highest_point)
+    #         block.draw(window, x, y, size + 1, highest_point, filter_list[filter])
     pygame.display.update()
 pygame.quit()
