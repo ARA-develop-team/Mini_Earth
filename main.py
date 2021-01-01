@@ -4,7 +4,7 @@ from class_block import CBlock
 import perlin_noise
 import functions_of_interaction_between_blocks as foibb
 import time
-
+import panel
 
 def blocks_visualization(block_thread_list, window_thread, window_x_thread, window_y_thread, x_cam_thread,
                          y_cam_thread, length_cam_thread, height_cam_thread, highest_point_thread, filter):
@@ -80,11 +80,14 @@ for column in range(num_vertical):
     new_y += block_size
     new_x = 0
 
-block_list[2050].height_water = 1000000
-
+block_list[2050].height_water = 100000
+block_list[8600].height_water = 100000
 
 clock = pygame.time.Clock()
 run = True
+
+panel = panel.Panel(x_panel, y_panel, window_x_panel, window_y_panel)
+
 pygame.init()
 while run:
     clock.tick(20)
@@ -96,6 +99,11 @@ while run:
                 filter += 1
                 if filter == len(filter_list):
                     filter = 0
+
+        if e.type == pygame.MOUSEBUTTONUP:
+            if e.button == 1:
+                panel.press_pause_button(e.pos)
+
         if e.type == pygame.MOUSEBUTTONDOWN:
             if e.button == 4:
                 if length_cam > 1 and height_cam > 1:
@@ -138,8 +146,8 @@ while run:
             height_cam = new_height_cam
 
     window.fill((47, 79, 79))
-
-    foibb.fibb_main(block_list, num_horizontal)
+    if not panel.pause:
+        foibb.fibb_main(block_list, num_horizontal)
 
     # blocks_for_thread = len(block_list) / threads_number
     # block_waiting_list = block_list.copy()
@@ -191,6 +199,8 @@ while run:
             size = (block.size / length_cam) * window_x_map
             # print("size - {}".format(size))
             block.draw(window, x, y, size + 1, highest_point, filter_list[filter])
-    pygame.draw.rect(window, (170, 102, 81), [x_panel, y_panel, window_x_panel, window_y_panel])
+    # pygame.draw.rect(window, (170, 102, 81), [x_panel, y_panel, window_x_panel, window_y_panel])
+    panel.draw_panel(window)
+    panel.draw_pause_button(window)
     pygame.display.update()
 pygame.quit()
