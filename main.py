@@ -51,7 +51,7 @@ threads_number = 10
 highest_point = 0
 extra = 0
 
-filter_list = ["elevation map", "waves map color", "waves map wb", "perlin noise"]
+filter_list = ["elevation map", "temperature air", "waves map color", "waves map wb", "perlin noise"]
 # , "perlin noise"
 filter = 0
 
@@ -82,6 +82,7 @@ for column in range(num_vertical):
 
 block_list[2050].height_water = 100000
 block_list[8600].height_water = 100000
+block_list[2050].temp_air = 30000
 
 clock = pygame.time.Clock()
 run = True
