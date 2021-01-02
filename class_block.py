@@ -176,12 +176,20 @@ class CBlock(object):
         return color
 
     def draw_temperature_air(self):
-        rgb = self.temp_air
-        if rgb > 255:
-            rgb = 255
-        if rgb < 0:
-            rgb = 0
-        color = (int(rgb), 0, 0)
+        if self.temp_air > 0:
+            rgb = (255 / 50) * self.temp_air
+            if rgb > 255:
+                rgb = 255
+            if rgb < 0:
+                rgb = 0
+            color = (rgb, 0, 0)
+        else:
+            rgb = (255 / 50) * abs(self.temp_air)
+            if rgb > 255:
+                rgb = 255
+                if rgb < 0:
+                    rgb = 0
+            color = (0, 0, rgb)
         return color
 
     def assignment_of_values(self):

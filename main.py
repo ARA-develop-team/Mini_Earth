@@ -51,7 +51,7 @@ threads_number = 10
 highest_point = 0
 extra = 0
 
-filter_list = ["elevation map", "temperature air", "waves map color", "waves map wb", "perlin noise"]
+filter_list = ["elevation map", "temperature air", "perlin noise", "waves map color", "waves map wb"]
 # , "perlin noise"
 filter = 0
 
@@ -80,9 +80,9 @@ for column in range(num_vertical):
     new_y += block_size
     new_x = 0
 
-block_list[2050].height_water = 100000
-block_list[8600].height_water = 100000
-block_list[2050].temp_air = 30000
+# block_list[2050].height_water = 100000
+# block_list[8600].height_water = 100000
+block_list[2050].temp_air = 30
 
 clock = pygame.time.Clock()
 run = True
@@ -91,6 +91,7 @@ panel = panel.Panel(x_panel, y_panel, window_x_panel, window_y_panel)
 
 pygame.init()
 while run:
+    block_list[2050].temp_air = 30
     clock.tick(20)
     for e in pygame.event.get():
         if e.type == pygame.QUIT:
@@ -103,7 +104,8 @@ while run:
 
         if e.type == pygame.MOUSEBUTTONUP:
             if e.button == 1:
-                panel.press_pause_button(e.pos)
+                panel.press_buttons(e.pos)
+                filter = panel.press_filter_buttons(e.pos, filter)
 
         if e.type == pygame.MOUSEBUTTONDOWN:
             if e.button == 4:
@@ -202,6 +204,5 @@ while run:
             block.draw(window, x, y, size + 1, highest_point, filter_list[filter])
     # pygame.draw.rect(window, (170, 102, 81), [x_panel, y_panel, window_x_panel, window_y_panel])
     panel.draw_panel(window)
-    panel.draw_pause_button(window)
     pygame.display.update()
 pygame.quit()

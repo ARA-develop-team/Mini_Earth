@@ -27,9 +27,8 @@ def temperature_exchange(block1, block2):
                  - (block2.height_ground + block2.height_water)
     if temp_difference > 0:
         ex = ((temp_difference / 2) * 20) / 100
-        print(ex)
-        # if high_difference != 0:
-        #     ex /= high_difference / 10
+        if high_difference != 0:
+            ex = (ex * high_difference) / 100
         block1.future_temp_air += ex
         block2.future_temp_air -= ex
 
