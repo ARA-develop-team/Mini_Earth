@@ -158,7 +158,8 @@ while run:
             sun_pos = 5000
         else:
             sun_pos += 1
-        block_list[sun_pos].temp_surface += 10
+    for number in range():
+        block_list[sun_pos + number].temp_surface += 10
     # blocks_for_thread = len(block_list) / threads_number
     # block_waiting_list = block_list.copy()
     # draw_thread_list = []
