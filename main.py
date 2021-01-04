@@ -51,6 +51,7 @@ grid_list = []
 threads_number = 10
 
 sun_pos = 5000
+sun_range = 50
 
 highest_point = 0
 extra = 0
@@ -158,8 +159,9 @@ while run:
             sun_pos = 5000
         else:
             sun_pos += 1
-    for number in range():
-        block_list[sun_pos + number].temp_surface += 10
+    for line in range(sun_range):
+        for number in range(sun_range):
+            block_list[sun_pos + number].temp_surface += 10
     # blocks_for_thread = len(block_list) / threads_number
     # block_waiting_list = block_list.copy()
     # draw_thread_list = []
