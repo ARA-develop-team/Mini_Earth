@@ -1,3 +1,4 @@
+import math
 
 def water_flow(block1, block2):
     difference = (block1.height_ground + block1.height_water) \
@@ -26,9 +27,13 @@ def temperature_exchange(block1, block2):
     high_difference = (block1.height_ground + block1.height_water)\
                  - (block2.height_ground + block2.height_water)
     if temp_difference > 0:
-        ex = ((temp_difference / 2) * 20) / 100
-        if high_difference != 0:
-            ex = (ex * high_difference) / 100
+        if high_difference > 1:
+            ex = ((temp_difference / 2) * (30 / high_difference)) / 100
+        elif high_difference < 0:
+            ex = ((temp_difference / 2) * (30 * math.sqrt(abs(high_difference)))) / 100
+        else:
+            ex = ((temp_difference / 2) * 30) / 100
+        print(ex)
         block1.future_temp_air += ex
         block2.future_temp_air -= ex
 

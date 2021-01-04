@@ -177,14 +177,14 @@ class CBlock(object):
 
     def draw_temperature_air(self):
         if self.temp_air > 0:
-            rgb = (255 / 50) * self.temp_air
+            rgb = (255 / 30) * self.temp_air
             if rgb > 255:
                 rgb = 255
             if rgb < 0:
                 rgb = 0
             color = (rgb, 0, 0)
         else:
-            rgb = (255 / 50) * abs(self.temp_air)
+            rgb = (255 / 30) * abs(self.temp_air)
             if rgb > 255:
                 rgb = 255
                 if rgb < 0:
@@ -198,3 +198,8 @@ class CBlock(object):
 
         self.temp_air += self.future_temp_air
         self.future_temp_air = 0
+
+    def pib(self):
+        temp_difference = self.temp_surface - self.temp_air
+        self.temp_air += (temp_difference * 20) / 100
+        self.temp_surface -= (temp_difference * 5) / 100

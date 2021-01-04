@@ -48,6 +48,8 @@ octave_number = 5
 grid_list = []
 threads_number = 10
 
+sun_pos = 5000
+
 highest_point = 0
 extra = 0
 
@@ -72,7 +74,7 @@ for column in range(num_vertical):
 
         height_block = (octave1 / 2) + (octave2 / 2) + (octave3 / 2)
 
-        block_list.append(CBlock(new_x, new_y, 10, height_block, 0, 10, 10, 10))
+        block_list.append(CBlock(new_x, new_y, 10, height_block, 0, 10, -50, 10))
         if height_block > highest_point:
             highest_point = height_block
 
@@ -91,7 +93,6 @@ panel = panel.Panel(x_panel, y_panel, window_x_panel, window_y_panel)
 
 pygame.init()
 while run:
-    block_list[2050].temp_air = 30
     clock.tick(20)
     for e in pygame.event.get():
         if e.type == pygame.QUIT:
@@ -151,7 +152,11 @@ while run:
     window.fill((47, 79, 79))
     if not panel.pause:
         foibb.fibb_main(block_list, num_horizontal)
-
+        if sun_pos == 5100:
+            sun_pos = 5000
+        else:
+            sun_pos += 1
+        block_list[sun_pos].temp_surface += 10
     # blocks_for_thread = len(block_list) / threads_number
     # block_waiting_list = block_list.copy()
     # draw_thread_list = []
@@ -185,6 +190,7 @@ while run:
     #             break
     for block in block_list:
         block.assignment_of_values()
+        block.pib()
         if block.x + block.size > x_cam and block.x < x_cam + length_cam \
                 and block.y + block.size > y_cam and block.y < y_cam + height_cam:
             # x = (block.x - x_cam) * (window_x / length_cam)
