@@ -4,6 +4,8 @@ from class_block import CBlock
 import perlin_noise
 import functions_of_interaction_between_blocks as fibb
 import time
+import panel
+
 
 
 
@@ -49,10 +51,12 @@ octave_number = 5
 grid_list = []
 threads_number = 10
 
+sun_pos = 5000
+
 highest_point = 0
 extra = 0
 
-filter_list = ["elevation map", "waves map color", "waves map wb", "perlin noise"]
+filter_list = ["elevation map", "temperature air", "perlin noise", "waves map color", "waves map wb"]
 # , "perlin noise"
 filter = 0
 
@@ -73,7 +77,7 @@ for column in range(num_vertical):
 
         height_block = (octave1 / 2) + (octave2 / 2) + (octave3 / 2)
 
-        block_list.append(CBlock(new_x, new_y, 10, height_block, 0, 10, 10, 10))
+        block_list.append(CBlock(new_x, new_y, 10, height_block, 0, 10, -50, 10))
         if height_block > highest_point:
             highest_point = height_block
 
@@ -81,11 +85,15 @@ for column in range(num_vertical):
     new_y += block_size
     new_x = 0
 
-block_list[2050].height_water = 1000000
-
+# block_list[2050].height_water = 100000
+# block_list[8600].height_water = 100000
+block_list[2050].temp_air = 30
 
 clock = pygame.time.Clock()
 run = True
+
+panel = panel.Panel(x_panel, y_panel, window_x_panel, window_y_panel)
+
 pygame.init()
 while run:
     clock.tick(20)
@@ -97,6 +105,12 @@ while run:
                 filter += 1
                 if filter == len(filter_list):
                     filter = 0
+
+        if e.type == pygame.MOUSEBUTTONUP:
+            if e.button == 1:
+                panel.press_buttons(e.pos)
+                filter = panel.press_filter_buttons(e.pos, filter)
+
         if e.type == pygame.MOUSEBUTTONDOWN:
             if e.button == 4:
                 if length_cam > 1 and height_cam > 1:
@@ -140,7 +154,14 @@ while run:
 
     window.fill((47, 79, 79))
 
-    fibb.fibb_main(block_list, num_horizontal)
+    if not panel.pause:
+        fibb.fibb_main(block_list, num_horizontal)
+        if sun_pos == 5100:
+            sun_pos = 5000
+        else:
+            sun_pos += 1
+    # for number in range():
+    block_list[sun_pos].temp_surface += 10
 
     # blocks_for_thread = len(block_list) / threads_number
     # block_waiting_list = block_list.copy()
@@ -175,6 +196,7 @@ while run:
     #             break
     for block in block_list:
         block.assignment_of_values()
+        block.pib()
         if block.x + block.size > x_cam and block.x < x_cam + length_cam \
                 and block.y + block.size > y_cam and block.y < y_cam + height_cam:
             # x = (block.x - x_cam) * (window_x / length_cam)
@@ -192,6 +214,8 @@ while run:
             size = (block.size / length_cam) * window_x_map
             # print("size - {}".format(size))
             block.draw(window, x, y, size + 1, highest_point, filter_list[filter])
-    pygame.draw.rect(window, (170, 102, 81), [x_panel, y_panel, window_x_panel, window_y_panel])
+
+    panel.draw_panel(window)
+
     pygame.display.update()
 pygame.quit()
