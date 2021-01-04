@@ -3,6 +3,8 @@ import threading
 from class_block import CBlock
 import perlin_noise
 import functions_of_interaction_between_blocks as fibb
+import time
+
 
 
 def blocks_visualization(block_thread_list, window_thread, window_x_thread, window_y_thread, x_cam_thread,
@@ -20,14 +22,21 @@ def blocks_visualization(block_thread_list, window_thread, window_x_thread, wind
             block.draw(window_thread, x, y, size + 1, highest_point_thread, filter)
 
 
-window_x = 500
+
+window_x = 700
 window_y = 500
+window_x_map = (window_x * 75) / 100
+window_y_map = window_y
+window_x_panel = (window_x * 25) / 100
+window_y_panel = window_y
+x_panel = (window_x * 75) / 100
+y_panel = 0
 window = pygame.display.set_mode((window_x, window_y))
 
 x_cam = 0
 y_cam = 0
-length_cam = 1000
-height_cam = 1000
+length_cam = window_x_map * 1
+height_cam = window_y_map * 1
 zoom = 1
 
 num_horizontal = 100
@@ -72,14 +81,14 @@ for column in range(num_vertical):
     new_y += block_size
     new_x = 0
 
-block_list[5550].height_water = 100000
+block_list[2050].height_water = 1000000
 
 
 clock = pygame.time.Clock()
 run = True
 pygame.init()
 while run:
-    clock.tick(60)
+    clock.tick(20)
     for e in pygame.event.get():
         if e.type == pygame.QUIT:
             run = False
@@ -131,56 +140,58 @@ while run:
 
     window.fill((47, 79, 79))
 
-    fibb.water_flow_4(block_list, num_horizontal)
+    fibb.fibb_main(block_list, num_horizontal)
 
-    blocks_for_thread = len(block_list) / threads_number
-    block_waiting_list = block_list.copy()
-    draw_thread_list = []
-
-    for thread in range(threads_number):
-        block_list_for_thread = []
-        if len(block_waiting_list) != 0:
-            for block in range(int(blocks_for_thread)):
-                block_list_for_thread.append(block_waiting_list.pop())
-
-            draw_thread = threading.Thread(target=blocks_visualization, args=(block_list_for_thread, window, window_x,
-                                                                              window_y, x_cam, y_cam, length_cam,
-                                                                              height_cam, highest_point,
-                                                                              filter_list[filter]))
-            draw_thread_list.append(draw_thread)
-            draw_thread.start()
-
-    thread_working = True
-    extra += 1
-
-    while thread_working:
-        if len(draw_thread_list) == 0:
-            thread_working = False
-
-        for thread in draw_thread_list:
-            if not thread.is_alive():
-                thread.join()
-                draw_thread_list.remove(thread)
-            if len(draw_thread_list) == 0:
-                thread_working = False
-                break
-    # for block in block_list:
-    #     if block.x + block.size > x_cam and block.x < x_cam + length_cam \
-    #             and block.y + block.size > y_cam and block.y < y_cam + height_cam:
-    #         # x = (block.x - x_cam) * (window_x / length_cam)
-    #         # y = (block.y - y_cam) * (window_y / height_cam)
-    #         # size = window_x / (length_cam / block.size)
-    #         # print("Блок находтса на кординате - {}, {}".format(block.x, block.y))
-    #         x_loc = block.x - x_cam
-    #         y_loc = block.y - y_cam
-    #         # print("кординати камери - {}, {}".format(x_cam, y_cam))
-    #         # print("локальные кординати - {}, {}".format(x_loc, y_loc))
-    #         x = (x_loc / length_cam) * window_x
-    #         y = (y_loc / height_cam) * window_y
-    #         # print("размери камери - {}, {}".format(length_cam, height_cam))
-    #         # print("x, y - {}, {}".format(x, y))
-    #         size = (block.size / length_cam) * window_x
-    #         # print("size - {}".format(size))
-    #         block.draw(window, x, y, size + 1, highest_point)
+    # blocks_for_thread = len(block_list) / threads_number
+    # block_waiting_list = block_list.copy()
+    # draw_thread_list = []
+    #
+    # for thread in range(threads_number):
+    #     block_list_for_thread = []
+    #     if len(block_waiting_list) != 0:
+    #         for block in range(int(blocks_for_thread)):
+    #             block_list_for_thread.append(block_waiting_list.pop())
+    #
+    #         draw_thread = threading.Thread(target=blocks_visualization, args=(block_list_for_thread, window, window_x,
+    #                                                                           window_y, x_cam, y_cam, length_cam,
+    #                                                                           height_cam, highest_point,
+    #                                                                           filter_list[filter]))
+    #         draw_thread_list.append(draw_thread)
+    #         draw_thread.start()
+    #
+    # thread_working = True
+    # extra += 1
+    #
+    # while thread_working:
+    #     if len(draw_thread_list) == 0:
+    #         thread_working = False
+    #
+    #     for thread in draw_thread_list:
+    #         if not thread.is_alive():
+    #             thread.join()
+    #             draw_thread_list.remove(thread)
+    #         if len(draw_thread_list) == 0:
+    #             thread_working = False
+    #             break
+    for block in block_list:
+        block.assignment_of_values()
+        if block.x + block.size > x_cam and block.x < x_cam + length_cam \
+                and block.y + block.size > y_cam and block.y < y_cam + height_cam:
+            # x = (block.x - x_cam) * (window_x / length_cam)
+            # y = (block.y - y_cam) * (window_y / height_cam)
+            # size = window_x / (length_cam / block.size)
+            # print("Блок находтса на кординате - {}, {}".format(block.x, block.y))
+            x_loc = block.x - x_cam
+            y_loc = block.y - y_cam
+            # print("кординати камери - {}, {}".format(x_cam, y_cam))
+            # print("локальные кординати - {}, {}".format(x_loc, y_loc))
+            x = (x_loc / length_cam) * window_x_map
+            y = (y_loc / height_cam) * window_y_map
+            # print("размери камери - {}, {}".format(length_cam, height_cam))
+            # print("x, y - {}, {}".format(x, y))
+            size = (block.size / length_cam) * window_x_map
+            # print("size - {}".format(size))
+            block.draw(window, x, y, size + 1, highest_point, filter_list[filter])
+    pygame.draw.rect(window, (170, 102, 81), [x_panel, y_panel, window_x_panel, window_y_panel])
     pygame.display.update()
 pygame.quit()

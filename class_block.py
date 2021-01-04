@@ -43,6 +43,7 @@ class CBlock(object):
         self.isDay = True
         self.filter = "waves map"
         self.wave_counter = 0
+        self.future_hw = 0
 
     def draw(self, screen, x, y, size, highest_point, filter):
         color = (0, 0, 0)
@@ -166,4 +167,8 @@ class CBlock(object):
                 color = self.colorbox["Golden birch"]
             else:
                 color = self.colorbox["Redhead"]
-        return color
+                return color
+
+    def assignment_of_values(self):
+        self.height_water += self.future_hw
+        self.future_hw = 0
