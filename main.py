@@ -8,6 +8,7 @@ import panel
 
 
 
+
 def blocks_visualization(block_thread_list, window_thread, window_x_thread, window_y_thread, x_cam_thread,
                          y_cam_thread, length_cam_thread, height_cam_thread, highest_point_thread, filter):
     for block in block_thread_list:
@@ -153,6 +154,7 @@ while run:
             height_cam = new_height_cam
 
     window.fill((47, 79, 79))
+
     if not panel.pause:
         fibb.fibb_main(block_list, num_horizontal)
         if sun_pos == 5100:
@@ -213,7 +215,7 @@ while run:
             size = (block.size / length_cam) * window_x_map
             # print("size - {}".format(size))
             block.draw(window, x, y, size + 1, highest_point, filter_list[filter])
-    # pygame.draw.rect(window, (170, 102, 81), [x_panel, y_panel, window_x_panel, window_y_panel])
+
     panel.draw_panel(window)
 
     pygame.display.update()
