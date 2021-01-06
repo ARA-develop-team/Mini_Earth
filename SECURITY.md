@@ -1,4 +1,4 @@
-Copyright 2020-2021 Anton Yakovenko 
+Copyright 2020-2021 Anton Yakovenko                                                                                                                            
 Copyright 2020-2021 Roman Vlasuk
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software 
