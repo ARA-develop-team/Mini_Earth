@@ -72,8 +72,19 @@ for column in range(num_vertical):
     new_y += block_size
     new_x = 0
 
-block_list[5550].height_water = 100000
+block_list[5550].height_water = 10000
+# block_list[4550].height_water = 100000
+# block_list[3550].height_water = 100000
+# block_list[2550].height_water = 100000
+# block_list[1550].height_water = 100000
+# block_list[5000].height_water = 100000
+# block_list[4000].height_water = 100000
+# block_list[3000].height_water = 100000
+# block_list[2000].height_water = 100000
+# block_list[1000].height_water = 100000
 
+# for x in range(len(block_list)):
+#     block_list[x].height_water = 1
 
 clock = pygame.time.Clock()
 run = True
