@@ -3,7 +3,7 @@ def water_flow(block1, block2):
     difference = (block1.height_ground + block1.height_water) \
                  - (block2.height_ground + block2.height_water)
     if difference > 0:
-        flow = (difference * 20) / 100
+        flow = difference * 0.2
         if block1.height_water < flow:
             block2.height_water += block1.height_water
             block1.height_water = 0
@@ -16,6 +16,7 @@ def water_flow(block1, block2):
         return 0
     else:
         return abs(difference)
+
 
 def water_flow_4(block_list, num_horizontal):
     for number in range(len(block_list)):

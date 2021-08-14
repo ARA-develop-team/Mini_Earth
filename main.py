@@ -4,15 +4,50 @@ from class_block import CBlock
 import perlin_noise
 import functions_of_interaction_between_blocks as fibb
 
+threads_number = 10  # количество потоков
 
+# переменные для window (pygame)
+window_x = 1000
+window_y = 600
+window = pygame.display.set_mode((window_x, window_y))
+
+# # переменнные камеры
+x_cam = 0  # координаты камеры
+y_cam = 0
+length_cam = 2000  # длинна и высота камеры
+height_cam = 1200
+zoom = 1
+
+# переменнные блоков
+num_horizontal = 100  # количество блоков по горизонтали
+num_vertical = 100  # количество блоков по вертикали
+block_size = 10  # размер блока
+block_list = []  # лист класов блок
+
+
+# переменные для работы с шумом
+new_x = 0
+new_y = 0
+grid_list = []
+
+# переменные для фильтров
+filter_list = ["elevation map", "waves map color", "waves map wb", "perlin noise"]
+filter = 0
+highest_point = 0
+
+
+# прорисовка блоков которые видит камера
 def blocks_visualization(block_thread_list, window_thread, window_x_thread, window_y_thread, x_cam_thread,
                          y_cam_thread, length_cam_thread, height_cam_thread, highest_point_thread, filter):
-    for block in block_thread_list:
+    for block in block_thread_list:  # перебор блоков
+        # проверкка видит ли камера блок
         if block.x + block.size > x_cam_thread and block.x < x_cam_thread + length_cam_thread \
                 and block.y + block.size > y_cam_thread and block.y < y_cam_thread + height_cam_thread:
+            # локальные кординаты
             x_loc = block.x - x_cam_thread
             y_loc = block.y - y_cam_thread
 
+            # кординаты блока на window
             x = (x_loc / length_cam_thread) * window_x_thread
             y = (y_loc / height_cam_thread) * window_y_thread
 
@@ -20,38 +55,7 @@ def blocks_visualization(block_thread_list, window_thread, window_x_thread, wind
             block.draw(window_thread, x, y, size + 1, highest_point_thread, filter)
 
 
-window_x = 500
-window_y = 500
-window = pygame.display.set_mode((window_x, window_y))
-
-x_cam = 0
-y_cam = 0
-length_cam = 1000
-height_cam = 1000
-zoom = 1
-
-num_horizontal = 100
-num_vertical = 100
-block_size = 10
-block_list = []
-new_x = 0
-new_y = 0
-octave_number = 5
-grid_list = []
-threads_number = 10
-
-highest_point = 0
-extra = 0
-
-filter_list = ["elevation map", "waves map color", "waves map wb", "perlin noise"]
-# , "perlin noise"
-filter = 0
-
-# for x in range(num_vertical):
-#     for y in range(num_horizontal):
-#         block_list.append(CBlock(y * block_size, x * block_size, 10, 100, 0, 10, 10, 10))
-
-
+# создание блоков с шумом перлина
 grid1 = perlin_noise.create_random_grid(5)
 grid2 = perlin_noise.create_random_grid(10)
 grid3 = perlin_noise.create_random_grid(20)
@@ -72,26 +76,25 @@ for column in range(num_vertical):
     new_y += block_size
     new_x = 0
 
-block_list[5550].height_water = 10000
-# block_list[4550].height_water = 100000
-# block_list[3550].height_water = 100000
-# block_list[2550].height_water = 100000
-# block_list[1550].height_water = 100000
-# block_list[5000].height_water = 100000
-# block_list[4000].height_water = 100000
-# block_list[3000].height_water = 100000
-# block_list[2000].height_water = 100000
-# block_list[1000].height_water = 100000
+# заполнение блоков водой
+block_list[5550].height_water = 100000
+block_list[4550].height_water = 100000
+block_list[3550].height_water = 100000
+block_list[2550].height_water = 100000
+block_list[1550].height_water = 100000
+block_list[5000].height_water = 100000
+block_list[4000].height_water = 100000
+block_list[3000].height_water = 100000
+block_list[2000].height_water = 100000
+block_list[1000].height_water = 100000
 
-# for x in range(len(block_list)):
-#     block_list[x].height_water = 1
 
-clock = pygame.time.Clock()
+clock = pygame.time.Clock()  # для ограничения скорости цикла
 run = True
 pygame.init()
 while run:
     clock.tick(60)
-    for e in pygame.event.get():
+    for e in pygame.event.get():  # про
         if e.type == pygame.QUIT:
             run = False
         if e.type == pygame.KEYUP:
@@ -162,7 +165,6 @@ while run:
             draw_thread.start()
 
     thread_working = True
-    extra += 1
 
     while thread_working:
         if len(draw_thread_list) == 0:
@@ -175,6 +177,7 @@ while run:
             if len(draw_thread_list) == 0:
                 thread_working = False
                 break
+
     # for block in block_list:
     #     if block.x + block.size > x_cam and block.x < x_cam + length_cam \
     #             and block.y + block.size > y_cam and block.y < y_cam + height_cam:
@@ -193,5 +196,6 @@ while run:
     #         size = (block.size / length_cam) * window_x
     #         # print("size - {}".format(size))
     #         block.draw(window, x, y, size + 1, highest_point)
+
     pygame.display.update()
 pygame.quit()
