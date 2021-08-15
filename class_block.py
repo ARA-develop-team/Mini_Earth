@@ -38,11 +38,13 @@ class CBlock(object):
         self.height_water = height_water
         self.temp_surface = temp_surface
         self.temp_air = temp_air
+        self.future_temp_air = 0
         self.cloud_concentration = clouds
         self.vegetation = []
         self.isDay = True
         self.filter = "waves map"
         self.wave_counter = 0
+        self.future_hw = 0
 
     def draw(self, screen, x, y, size, highest_point, filter):
         color = (0, 0, 0)
@@ -60,6 +62,9 @@ class CBlock(object):
 
         if self.filter == "waves map wb":
             color = self.draw_waves_map_wb()
+
+        if self.filter == "temperature air":
+            color = self.draw_temperature_air()
         pygame.draw.rect(screen, color, (x, y, size, size))
 
     def draw_perlin_noise(self, highest_point):
@@ -151,6 +156,8 @@ class CBlock(object):
             rgb = (255 / 50) * self.wave_counter
             if rgb > 255:
                 rgb = 255
+            if rgb < 0:
+                rgb = 0
             color = (rgb, rgb, rgb)
         else:
             elevation = self.height_ground - water_level
@@ -167,3 +174,32 @@ class CBlock(object):
             else:
                 color = self.colorbox["Redhead"]
         return color
+
+    def draw_temperature_air(self):
+        if self.temp_air > 0:
+            rgb = (255 / 30) * self.temp_air
+            if rgb > 255:
+                rgb = 255
+            if rgb < 0:
+                rgb = 0
+            color = (rgb, 0, 0)
+        else:
+            rgb = (255 / 30) * abs(self.temp_air)
+            if rgb > 255:
+                rgb = 255
+                if rgb < 0:
+                    rgb = 0
+            color = (0, 0, rgb)
+        return color
+
+    def assignment_of_values(self):
+        self.height_water += self.future_hw
+        self.future_hw = 0
+
+        self.temp_air += self.future_temp_air
+        self.future_temp_air = 0
+
+    def pib(self):
+        temp_difference = self.temp_surface - self.temp_air
+        self.temp_air += (temp_difference * 20) / 100
+        self.temp_surface -= (temp_difference * 5) / 100
