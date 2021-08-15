@@ -23,7 +23,7 @@ window = pygame.display.set_mode((window_x, window_y))
 # # переменнные камеры
 x_cam = 0  # координаты камеры
 y_cam = 0
-length_cam = window_x_map * 0.1  # длинна и высота камеры
+length_cam = window_x_map * 0.1  # длина и высота камеры
 height_cam = window_y_map * 0.1
 zoom = 1
 
@@ -55,14 +55,14 @@ def blocks_visualization(block_thread_list, window_thread, window_x_thread, wind
                          y_cam_thread, length_cam_thread, height_cam_thread, highest_point_thread, filter):
     for block in block_thread_list:  # перебор блоков
         block.assignment_of_values()
-        # проверкка видит ли камера блок
+        # проверка видит ли камера блок
         if block.x + block.size > x_cam_thread and block.x < x_cam_thread + length_cam_thread \
                 and block.y + block.size > y_cam_thread and block.y < y_cam_thread + height_cam_thread:
-            # локальные кординаты
+            # локальные координаты
             x_loc = block.x - x_cam_thread
             y_loc = block.y - y_cam_thread
 
-            # кординаты блока на window
+            # координаты блока на window
             x = (x_loc / length_cam_thread) * window_x_thread
             y = (y_loc / height_cam_thread) * window_y_thread
 
@@ -119,12 +119,12 @@ clock = pygame.time.Clock()  # для ограничения скорости ц
 
 run = True
 
-panel = panel.Panel(x_panel, y_panel, window_x_panel, window_y_panel)
+panel = panel.Panel(x_panel, y_panel, window_x_panel, window_y_panel)  # создание панели
 
 pygame.init()
 while run:
     clock.tick(60)
-    for e in pygame.event.get():  # про
+    for e in pygame.event.get():  # проверка нажатий
         if e.type == pygame.QUIT:
             run = False
         if e.type == pygame.KEYUP:
