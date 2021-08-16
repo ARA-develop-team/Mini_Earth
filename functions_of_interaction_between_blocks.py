@@ -12,7 +12,8 @@ def water_flow(block1, block2):
             block2.future_hw += flow
 
         # if flow < 0.01:
-        #      block1.future_hw = - block1.height_water
+        #      block1.future_hw -= block1.height_water
+        #      block2.future_hw += block1.height_water
         else:
             block1.future_hw -= flow
             block2.future_hw += flow

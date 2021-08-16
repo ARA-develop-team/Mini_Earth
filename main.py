@@ -5,13 +5,13 @@ import perlin_noise
 import functions_of_interaction_between_blocks as fibb
 import time
 import panel
+import camera
 
-
-threads_number = 1  # количество потоков
+threads_number = 10  # количество потоков
 
 # переменные для window (pygame)
 window_x = 1000
-window_y = 600
+window_y = 1000
 window_x_map = (window_x * 75) / 100
 window_y_map = window_y
 window_x_panel = (window_x * 25) / 100
@@ -21,6 +21,8 @@ y_panel = 0
 window = pygame.display.set_mode((window_x, window_y))
 
 # # переменнные камеры
+main_camera = camera.Camera(0, 0, window_x_map * 0.1, window_y_map * 0.1)
+
 x_cam = 0  # координаты камеры
 y_cam = 0
 length_cam = window_x_map * 0.1  # длина и высота камеры
@@ -56,18 +58,10 @@ def blocks_visualization(block_thread_list, window_thread, window_x_thread, wind
     for block in block_thread_list:  # перебор блоков
         block.assignment_of_values()
         # проверка видит ли камера блок
-        if block.x + block.size > x_cam_thread and block.x < x_cam_thread + length_cam_thread \
-                and block.y + block.size > y_cam_thread and block.y < y_cam_thread + height_cam_thread:
-            # локальные координаты
-            x_loc = block.x - x_cam_thread
-            y_loc = block.y - y_cam_thread
-
-            # координаты блока на window
-            x = (x_loc / length_cam_thread) * window_x_thread
-            y = (y_loc / height_cam_thread) * window_y_thread
-
-            size = (block.size / length_cam_thread) * window_x_thread
+        if main_camera.in_vision(block.x, block.y, block.size):
+            x, y, size = main_camera.get_block_in_window(block.x, block.y, block.size, window_x_thread, window_y_thread)
             block.draw(window_thread, x, y, size + 1, highest_point_thread, filter)
+
 
 
 # for column in range(num_vertical):
@@ -140,44 +134,22 @@ while run:
 
         if e.type == pygame.MOUSEBUTTONDOWN:
             if e.button == 4:
-                if length_cam > 1 and height_cam > 1:
-                    new_length_cam = length_cam / 1.2
-                    new_height_cam = height_cam / 1.2
-                    x_cam += (length_cam - new_length_cam) / 2
-                    y_cam += (height_cam - new_height_cam) / 2
-                    length_cam = new_length_cam
-                    height_cam = new_height_cam
+                main_camera.zoom_in()
             if e.button == 5:
-                new_length_cam = length_cam * 1.2
-                new_height_cam = height_cam * 1.2
-                x_cam -= (new_length_cam - length_cam) / 2
-                y_cam -= (new_height_cam - height_cam) / 2
-                length_cam = new_length_cam
-                height_cam = new_height_cam
+                main_camera.zoom_out()
     keys = pygame.key.get_pressed()
     if keys[pygame.K_d]:
-        x_cam += 10
+        main_camera.move_right(10)
     if keys[pygame.K_a]:
-        x_cam -= 10
+        main_camera.move_left(10)
     if keys[pygame.K_w]:
-        y_cam -= 10
+        main_camera.move_up(10)
     if keys[pygame.K_s]:
-        y_cam += 10
+        main_camera.move_down(10)
     if keys[pygame.K_r]:
-        new_length_cam = length_cam * 1.2
-        new_height_cam = height_cam * 1.2
-        x_cam -= (new_length_cam - length_cam) / 2
-        y_cam -= (new_height_cam - height_cam) / 2
-        length_cam = new_length_cam
-        height_cam = new_height_cam
+        main_camera.zoom_out()
     if keys[pygame.K_f]:
-        if length_cam > 1 and height_cam > 1:
-            new_length_cam = length_cam / 1.2
-            new_height_cam = height_cam / 1.2
-            x_cam += (length_cam - new_length_cam) / 2
-            y_cam += (height_cam - new_height_cam) / 2
-            length_cam = new_length_cam
-            height_cam = new_height_cam
+        main_camera.zoom_in()
 
     window.fill((47, 79, 79))
 
