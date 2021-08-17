@@ -6,19 +6,19 @@ class Simulation(object):
         self.filter = 0
         self.filter_list = ["elevation map", "waves map color", "waves map wb", "perlin noise", "temperature air"]
         self.camera = None
+        self.word = None
+
+    def create_word_with_perlin_noise(self):
+        pass
 
     def draw_menu(self):
         pass
 
-    def input(self):
+    def input_mouse(self):
+
         for e in pygame.event.get():  # проверка нажатий
             if e.type == pygame.QUIT:
                 self.run = False
-            if e.type == pygame.KEYUP:
-                if e.key == pygame.K_g:
-                    self.filter += 1
-                    if self.filter == len(filter_list):
-                        self.filter = 0
 
             if e.type == pygame.MOUSEBUTTONUP:
                 if e.button == 1:
@@ -28,40 +28,24 @@ class Simulation(object):
             if e.type == pygame.MOUSEBUTTONDOWN:
                 if e.button == 4:
                     if length_cam > 1 and height_cam > 1:
-                        new_length_cam = length_cam / 1.2
-                        new_height_cam = height_cam / 1.2
-                        x_cam += (length_cam - new_length_cam) / 2
-                        y_cam += (height_cam - new_height_cam) / 2
-                        length_cam = new_length_cam
-                        height_cam = new_height_cam
+
                 if e.button == 5:
-                    new_length_cam = length_cam * 1.2
-                    new_height_cam = height_cam * 1.2
-                    x_cam -= (new_length_cam - length_cam) / 2
-                    y_cam -= (new_height_cam - height_cam) / 2
-                    length_cam = new_length_cam
-                    height_cam = new_height_cam
-            keys = pygame.key.get_pressed()
-            if keys[pygame.K_d]:
-                x_cam += 10
-            if keys[pygame.K_a]:
-                x_cam -= 10
-            if keys[pygame.K_w]:
-                y_cam -= 10
-            if keys[pygame.K_s]:
-                y_cam += 10
-            if keys[pygame.K_r]:
-                new_length_cam = length_cam * 1.2
-                new_height_cam = height_cam * 1.2
-                x_cam -= (new_length_cam - length_cam) / 2
-                y_cam -= (new_height_cam - height_cam) / 2
-                length_cam = new_length_cam
-                height_cam = new_height_cam
-            if keys[pygame.K_f]:
-                if length_cam > 1 and height_cam > 1:
-                    new_length_cam = length_cam / 1.2
-                    new_height_cam = height_cam / 1.2
-                    x_cam += (length_cam - new_length_cam) / 2
-                    y_cam += (height_cam - new_height_cam) / 2
-                    length_cam = new_length_cam
-                    height_cam = new_height_cam
+
+
+    def input_keyboard(self):
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_d]:
+
+        if keys[pygame.K_a]:
+
+        if keys[pygame.K_w]:
+
+        if keys[pygame.K_s]:
+
+        if keys[pygame.K_r]:
+
+        if keys[pygame.K_f]:
+
+        if keys[pygame.K_g]:
+
+

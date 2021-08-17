@@ -6,6 +6,7 @@ import functions_of_interaction_between_blocks as fibb
 import time
 import panel
 import camera
+import planet
 
 threads_number = 10  # количество потоков
 
@@ -95,17 +96,19 @@ for column in range(num_vertical):
     new_y += block_size
     new_x = 0
 
+word = planet.Planet(block_list, num_horizontal, num_vertical, block_size)
+
 # заполнение блоков водой
-block_list[5550].height_water = 10000
-block_list[4550].height_water = 10000
-block_list[3550].height_water = 10000
-block_list[2550].height_water = 10000
-block_list[1550].height_water = 10000
-block_list[5000].height_water = 10000
-block_list[4000].height_water = 10000
-block_list[3000].height_water = 10000
-block_list[2000].height_water = 10000
-block_list[1000].height_water = 10000
+word.block_list[5550].height_water = 10000
+word.block_list[4550].height_water = 10000
+word.block_list[3550].height_water = 10000
+word.block_list[2550].height_water = 10000
+word.block_list[1550].height_water = 10000
+word.block_list[5000].height_water = 10000
+word.block_list[4000].height_water = 10000
+word.block_list[3000].height_water = 10000
+word.block_list[2000].height_water = 10000
+word.block_list[1000].height_water = 10000
 
 # block_list[2050].temp_air = 30
 
@@ -153,8 +156,8 @@ while run:
 
     window.fill((47, 79, 79))
 
-    blocks_for_thread = len(block_list) / threads_number
-    block_waiting_list = block_list.copy()
+    blocks_for_thread = len(word.block_list) / threads_number
+    block_waiting_list = word.block_list.copy()
     draw_thread_list = []
 
     for thread in range(threads_number):
@@ -185,7 +188,7 @@ while run:
                 break
 
     if not panel.pause:
-        fibb.fibb_main(block_list, num_horizontal)
+        word.fibb_main()
         if sun_pos == 5100:
             sun_pos = 5000
         else:
