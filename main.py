@@ -11,7 +11,7 @@ threads_number = 1  # количество потоков
 
 # переменные для window (pygame)
 window_x = 1000
-window_y = 600
+window_y = 1000
 window_x_map = (window_x * 75) / 100
 window_y_map = window_y
 window_x_panel = (window_x * 25) / 100
