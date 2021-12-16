@@ -1,0 +1,11 @@
+filters: ["elevation map", "waves map color", "waves map wb", "perlin noise", "temperature air"]
+
+window_x: 1000
+window_y: 1000
+
+camera_x: 0
+camera_y: 0
+
+block_num_columns: 100   # horizontal number of blocks
+block_num_rows: 100   # vertical number of blocks
+block_size: 10
