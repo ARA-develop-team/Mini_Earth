@@ -17,12 +17,14 @@ class Simulation(object):
         self.window_size = (data['window_x'], data['window_y'])
         self.camera_position = (data['camera_x'], data['camera_y'])
 
-        self.block_grid_size = (data['block_num_columns'], data['block_num_rows'])
+        self.block_num_horizontal = data['block_num_columns']
+        self.block_num_vertical = data['block_num_raws']
         self.block_size = data['block_size']
 
         self.camera = None
         self.world = None
-        
+        self.create_blocks
+
         del data
 
     def create_blocks(self):
@@ -34,32 +36,33 @@ class Simulation(object):
         grid_number = 5 
 
         for _ in range(3):
-            grid_list.append(perlin_noise.create_random_grid(5))
+            grid_list.append(perlin_noise.create_random_grid(grid_number))
             grid_number *= 2
 
         octave_list = []
-        new_x = 0
-        new_y = 0
 
-        for column in range(self.block_grid_size[0]):
-            for new_block in range(self.block_grid_size[1]):
+        for y in range(self.block_num_vertical):
+            y = y * self.block_size
+
+            for x in range(self.block_num_horizontal):
+                x = x * self.block_size
+                
                 for i in range(len(grid_list)):
-                    octave_list.append(perlin_noise.perlin_noise(new_x + 5, new_y + 5, grid_list[i], 
+                    octave_list.append(perlin_noise.perlin_noise(x + 5, y + 5, grid_list[i], 
                         self.block_grid_size[0] * self.block_size)) * (20 - 5*i) ** 2 + 100
 
                 height_block = 0
                 for octave in octave_list:
                      height_block += octave / 2
 
-                blocks.append(CBlock(new_x, new_y, self.block_size, height_block, 0, 10, -50, 10))
-        
-                new_x += self.block_size
-
-            new_x = 0
-            new_y += self.block_size
+                blocks.append(CBlock(x, y, self.block_size, height_block, 0, 10, -50, 10))
 
         return blocks
 
+
+if __name__ == '__main__':
+    simulation = Simulation()
+    
                     
 
     # def create_word_with_perlin_noise(self):

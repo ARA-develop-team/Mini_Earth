@@ -5,7 +5,7 @@ def parse_data(file_name):
         data_dict = yaml.load(file, yaml.Loader)
 
         for data in data_dict:
-            if data_yml[data] is None:
+            if data_dict[data] is None:
                 print(f"[ValueError] {data} is empty! \nMake changes in the file '{file_name}'")
                 return False
 
