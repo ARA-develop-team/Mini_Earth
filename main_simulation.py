@@ -10,6 +10,8 @@ from parser import parse_data
 from class_block import CBlock
 from planet import Planet
 
+print("Hello from the ARA development. https://github.com/ARA-develop-team")
+
 
 class Simulation(object):
 
@@ -34,8 +36,9 @@ class Simulation(object):
 
     def main(self):
         """Main function."""
-        while self.run:
-            pass
+        pass
+        # while self.run:
+        #     pass
 
     def save(self):
         with open('world.pkl', 'wb') as file:
@@ -103,7 +106,9 @@ def load():
 
 
 if __name__ == '__main__':
+    print("\nWelcome to the World!")
     simulation = Simulation()
+    simulation.main()
 
     # simulation.main()
 
