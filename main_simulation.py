@@ -1,8 +1,14 @@
 """Main World file"""
 
+import time
+import pygame
+import pickle
+import perlin_noise
+
+from decorators import ProgressBar
 from parser import parse_data
 from class_block import CBlock
-import perlin_noise
+from planet import Planet
 
 
 class Simulation(object):
@@ -18,52 +24,88 @@ class Simulation(object):
         self.camera_position = (data['camera_x'], data['camera_y'])
 
         self.block_num_horizontal = data['block_num_columns']
-        self.block_num_vertical = data['block_num_raws']
+        self.block_num_vertical = data['block_num_rows']
         self.block_size = data['block_size']
 
         self.camera = None
-        self.world = None
-        self.create_blocks
+        self.world = self.create_world()
 
         del data
 
+    def main(self):
+        """Main function."""
+        while self.run:
+            pass
+
+    def save(self):
+        with open('world.pkl', 'wb') as file:
+            pickle.dump(self.world, file, pickle.HIGHEST_PROTOCOL)
+
+    def create_world(self):
+        """Create world."""
+
+        blocks = self.create_blocks()
+        world = Planet(blocks, self.block_num_horizontal, self.block_num_vertical, self.block_size)
+
+        return world
+
     def create_blocks(self):
-        """create all blocks using perlin noise"""
+        """Create all blocks using perlin noise."""
 
         blocks = []
-        
+
         grid_list = []
-        grid_number = 5 
+        grid_num = 3
+        grid_size = 5
 
+        @ProgressBar(text="Creating Perlin Grids", aim=grid_num)
+        def create_perlin_grid():
+            grid = perlin_noise.create_random_grid(grid_size)
+            return grid
+
+        @ProgressBar(text='Creating Blocks', aim=(self.block_num_horizontal * self.block_num_vertical))
+        def create_block():
+            octave_list = []
+
+            for i in range(len(grid_list)):
+                octave_list.append(perlin_noise.perlin_noise(x + 5, y + 5, grid_list[i],
+                                                             self.block_num_horizontal * self.block_size) * (
+                                           20 - 5 * i) ** 2 + 100)
+
+                height_block = 0
+                for octave in octave_list:
+                    height_block += octave / 2
+
+                block = CBlock(x, y, self.block_size, height_block, 0, 10, -50, 10)
+                return block
+
+        # Code of creation.
         for _ in range(3):
-            grid_list.append(perlin_noise.create_random_grid(grid_number))
-            grid_number *= 2
-
-        octave_list = []
+            new_grid = create_perlin_grid()
+            grid_list.append(new_grid)
+            grid_size *= 2
 
         for y in range(self.block_num_vertical):
             y = y * self.block_size
 
             for x in range(self.block_num_horizontal):
                 x = x * self.block_size
-                
-                for i in range(len(grid_list)):
-                    octave_list.append(perlin_noise.perlin_noise(x + 5, y + 5, grid_list[i], 
-                        self.block_grid_size[0] * self.block_size)) * (20 - 5*i) ** 2 + 100
 
-                height_block = 0
-                for octave in octave_list:
-                     height_block += octave / 2
-
-                blocks.append(CBlock(x, y, self.block_size, height_block, 0, 10, -50, 10))
+                new_block = create_block()
+                blocks.append(new_block)
 
         return blocks
 
 
+def load():
+    with open('world.pkl', 'rb') as file:
+        return pickle.load(file)
+
+
 if __name__ == '__main__':
     simulation = Simulation()
-    
-                    
+
+    # simulation.main()
 
     # def create_word_with_perlin_noise(self):
     #     pass
@@ -104,5 +146,3 @@ if __name__ == '__main__':
     #     # if keys[pygame.K_f]:
     #     #
     #     # if keys[pygame.K_g]:
-
-

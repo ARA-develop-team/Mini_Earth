@@ -36,7 +36,6 @@ class Planet(object):
             self.block_list[number].wave_counter = dif1 + dif2 + dif3 + dif4
 
 
-
 def water_flow_between_block(block1, block2):
     difference = (block1.height_ground + block1.height_water) \
                  - (block2.height_ground + block2.height_water)

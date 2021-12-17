@@ -1,5 +1,6 @@
 import yaml
 
+
 def parse_data(file_name):
     with open(file_name) as file:
         data_dict = yaml.load(file, yaml.Loader)
