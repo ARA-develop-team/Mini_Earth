@@ -32,20 +32,37 @@ class Simulation(object):
         self.camera = None
         self.world = self.create_world()
 
+        pygame.init()
+        self.window = pygame.display.set_mode(self.window_size)
+        pygame.display.set_caption('Mini Earth')
+
         del data
 
     def main(self):
         """Main function."""
-        pass
-        # while self.run:
-        #     pass
+
+        while self.run:
+            self.input_process()
+            self.draw_world()
 
     def save(self):
         with open('world.pkl', 'wb') as file:
             pickle.dump(self.world, file, pickle.HIGHEST_PROTOCOL)
 
+    def draw_world(self):
+        """Draw the World using pygame."""
+
+        self.window.fill((47, 79, 79))
+
+        pygame.display.flip()
+
+    def input_process(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                self.run = False
+
     def create_world(self):
-        """Create world."""
+        """Create the World."""
 
         blocks = self.create_blocks()
         world = Planet(blocks, self.block_num_horizontal, self.block_num_vertical, self.block_size)
@@ -72,8 +89,8 @@ class Simulation(object):
 
             for i in range(len(grid_list)):
                 octave_list.append(perlin_noise.perlin_noise(x + 5, y + 5, grid_list[i],
-                                                             self.block_num_horizontal * self.block_size) * (
-                                           20 - 5 * i) ** 2 + 100)
+                                                             self.block_num_horizontal * self.block_size) *
+                                                            (20 - 5 * i) ** 2 + 100)
 
                 height_block = 0
                 for octave in octave_list:
