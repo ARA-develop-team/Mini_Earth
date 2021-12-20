@@ -159,6 +159,7 @@ def save(data):
 
 def load():
     """Load last closed simulation"""
+
     with open('world.pkl', 'rb') as file:
         return pickle.load(file)
 
