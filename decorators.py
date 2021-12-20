@@ -13,10 +13,10 @@ class ProgressBar:
             self.progress = Bar(text, max=aim)
 
     def __call__(self, func):
-        def add_progress():
+        def add_progress(*args):
             bar = self.bar_list[0]
 
-            result = func()
+            result = func(*args)
             bar.progress.next()
 
             if bar.progress.index == bar.progress.max:

@@ -66,7 +66,6 @@ class CBlock(object):
         if self.filter == "temperature air":
             color = self.draw_temperature_air()
 
-        print(color, x, y, size)
         pygame.draw.rect(screen, color, (x, y, size, size))
 
     def draw_perlin_noise(self, highest_point):

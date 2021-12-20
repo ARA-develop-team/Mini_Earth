@@ -7,8 +7,13 @@ def parse_data(file_name):
 
         for data in data_dict:
             if data_dict[data] is None:
-                print(f"[ValueError] {data} is empty! \nMake changes in the file '{file_name}'")
+                print(f"[ParserError] {data} is empty! \nMake changes in the file '{file_name}'")
                 return False
+
+            if data == 'octave_value':
+                if len(data_dict[data]) < len(data_dict['grid_value']):
+                    print(f"[ParserError] {data} wasn't filled right! \nMake changes in the file '{file_name}'")
+                    return False
 
         return data_dict
 

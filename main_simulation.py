@@ -29,9 +29,12 @@ class Simulation(object):
 
     def __init__(self):
         self.run = True
-        self.active_filter = 0
 
         data = parse_data('data.yml')
+        if not data:
+            quit()
+
+        self.active_filter = 0
         self.filters = data['filters']
 
         self.window_size = (data['window_x'], data['window_y'])
@@ -42,7 +45,8 @@ class Simulation(object):
         self.block_size = data['block_size']
 
         self.camera = None
-        self.world = self.create_world()
+
+        self.world = self.create_world(data['grid_value'], data['octave_value'])
 
         pygame.init()
         self.window = pygame.display.set_mode(self.window_size)
@@ -58,8 +62,10 @@ class Simulation(object):
             self.draw_world()
 
     def temp(self):
-        for block in self.world.block_list:
-            block.draw(self.window, block.x, block.y, block.size, self.world.highest_point, self.filters[self.active_filter])
+        for line in self.world.block_list:
+            for block in line:
+                block.draw(self.window, block.x, block.y, block.size, self.world.highest_point,
+                           self.filters[self.active_filter])
 
     def draw_world(self):
         """Draw the World using pygame."""
@@ -69,30 +75,29 @@ class Simulation(object):
         pygame.display.flip()
 
     def input_process(self):
+        """Process all pygame inputs from user."""
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.run = False
 
-    def create_world(self):
+    def create_world(self, *args):
         """Create the World."""
 
-        blocks = self.create_blocks()
+        blocks = self.create_blocks(*args)
         highest_point = find_highest_block(blocks)
         world = Planet(blocks, self.block_num_horizontal, self.block_num_vertical, self.block_size, highest_point)
 
         return world
 
-    def create_blocks(self):
+    def create_blocks(self, grid_value, octave_extra_value):
         """Create all blocks using perlin noise."""
 
         blocks = []
-
         grid_list = []
-        grid_num = 3
-        grid_size = 5
 
-        @ProgressBar(text="Creating Perlin Grids", aim=grid_num)
-        def create_perlin_grid():
+        @ProgressBar(text="Creating Perlin Grids", aim=len(grid_value))
+        def create_perlin_grid(grid_size):
             grid = perlin_noise.create_random_grid(grid_size)
             return grid
 
@@ -101,32 +106,33 @@ class Simulation(object):
             octave_list = []
 
             for i in range(len(grid_list)):
-                octave_list.append(perlin_noise.perlin_noise(x + 5, y + 5, grid_list[i],
-                                                             self.block_num_horizontal * self.block_size) *
-                                   (20 - 5 * i) ** 2 + 100)
+                new_octave = perlin_noise.perlin_noise(x + 5, y + 5, grid_list[i],
+                                                       self.block_num_horizontal * self.block_size)
 
-                # Find height of ground in the block.
-                height_block = 0
-                for octave in octave_list:
-                    height_block += octave / 2
+                octave_list.append(new_octave * octave_extra_value[i] ** 2 + 100)
 
-                block = CBlock(x, y, self.block_size, height_block, 0, 10, -50, 10)
-                return block
+            # Find height of ground in the block.
+            height_block = 0
+            for octave in octave_list:
+                height_block += octave / 2
+
+            block = CBlock(x, y, self.block_size, height_block, 0, 10, -50, 10)
+            return block
 
         # Code of creation.
-        for _ in range(3):
-            new_grid = create_perlin_grid()
+        for value in grid_value:
+            new_grid = create_perlin_grid(value)
             grid_list.append(new_grid)
-            grid_size *= 2
 
         for y in range(self.block_num_vertical):
             y = y * self.block_size
+            blocks.append([])
 
             for x in range(self.block_num_horizontal):
                 x = x * self.block_size
 
                 new_block = create_block()
-                blocks.append(new_block)
+                blocks[-1].append(new_block)
 
         return blocks
 
@@ -136,9 +142,10 @@ def find_highest_block(blocks):
 
     highest = 0
 
-    for block in blocks:
-        if block.height_ground > highest:
-            highest = block.height_ground
+    for line in blocks:
+        for block in line:
+            if block.height_ground > highest:
+                highest = block.height_ground
 
     return highest
 
@@ -151,6 +158,7 @@ def save(data):
 
 
 def load():
+    """Load last closed simulation"""
     with open('world.pkl', 'rb') as file:
         return pickle.load(file)
 
