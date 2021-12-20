@@ -1,11 +1,12 @@
 
 class Planet(object):
 
-    def __init__(self, block_list, num_horizontal, num_vertical, block_size):
+    def __init__(self, block_list, num_horizontal, num_vertical, block_size, highest):
         self.block_list = block_list
+        self.block_size = block_size
         self.num_horizontal = num_horizontal
         self.num_vertical = num_vertical
-        self.block_size = block_size
+        self.highest_point = highest
 
     def fibb_main(self):
         for number in range(len(self.block_list)):

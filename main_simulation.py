@@ -1,4 +1,16 @@
-"""Main World file"""
+"""Main World file.
+
+
+* Comment for developers!
+
+For a better understanding of each other, I propose you such an agreement:
+    - Let’s mark all time comments with the star symbol (*). Example:
+
+      # * Delete in the future.
+
+      I mean the commentaries you’ve created for yourself and which are you going to
+      delete in the future. Normal comments leave with no changes :)
+"""
 
 import time
 import pygame
@@ -45,15 +57,15 @@ class Simulation(object):
             self.input_process()
             self.draw_world()
 
-    def save(self):
-        with open('world.pkl', 'wb') as file:
-            pickle.dump(self.world, file, pickle.HIGHEST_PROTOCOL)
+    def temp(self):
+        for block in self.world.block_list:
+            block.draw(self.window, block.x, block.y, block.size, self.world.highest_point, self.filters[self.active_filter])
 
     def draw_world(self):
         """Draw the World using pygame."""
 
         self.window.fill((47, 79, 79))
-
+        self.temp()
         pygame.display.flip()
 
     def input_process(self):
@@ -65,7 +77,8 @@ class Simulation(object):
         """Create the World."""
 
         blocks = self.create_blocks()
-        world = Planet(blocks, self.block_num_horizontal, self.block_num_vertical, self.block_size)
+        highest_point = find_highest_block(blocks)
+        world = Planet(blocks, self.block_num_horizontal, self.block_num_vertical, self.block_size, highest_point)
 
         return world
 
@@ -90,8 +103,9 @@ class Simulation(object):
             for i in range(len(grid_list)):
                 octave_list.append(perlin_noise.perlin_noise(x + 5, y + 5, grid_list[i],
                                                              self.block_num_horizontal * self.block_size) *
-                                                            (20 - 5 * i) ** 2 + 100)
+                                   (20 - 5 * i) ** 2 + 100)
 
+                # Find height of ground in the block.
                 height_block = 0
                 for octave in octave_list:
                     height_block += octave / 2
@@ -115,6 +129,25 @@ class Simulation(object):
                 blocks.append(new_block)
 
         return blocks
+
+
+def find_highest_block(blocks):
+    """Find the highest block in the world."""
+
+    highest = 0
+
+    for block in blocks:
+        if block.height_ground > highest:
+            highest = block.height_ground
+
+    return highest
+
+
+def save(data):
+    """Save simulation for reopening"""
+
+    with open('world.pkl', 'wb') as file:
+        pickle.dump(data, file, pickle.HIGHEST_PROTOCOL)
 
 
 def load():
@@ -167,4 +200,4 @@ if __name__ == '__main__':
     #     #
     #     # if keys[pygame.K_f]:
     #     #
-    #     # if keys[pygame.K_g]:
+    #

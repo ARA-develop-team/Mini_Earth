@@ -28,7 +28,7 @@ class CBlock(object):
                 "Yellow ocher": (174, 160, 75),
                 "Byzantine": (210, 53, 210),
                 "Dark magenta": (139, 0, 139),
-                "Byzantium":(112, 41, 99)}
+                "Byzantium": (112, 41, 99)}
 
     def __init__(self, x, y, size, height_ground, height_water, temp_surface, temp_air, clouds):
         self.x = x
@@ -65,6 +65,8 @@ class CBlock(object):
 
         if self.filter == "temperature air":
             color = self.draw_temperature_air()
+
+        print(color, x, y, size)
         pygame.draw.rect(screen, color, (x, y, size, size))
 
     def draw_perlin_noise(self, highest_point):
