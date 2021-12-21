@@ -50,7 +50,7 @@ class Panel(object):
         # проверка фильтров
         number_filter = 0
         for pos_f in self.button_filter_list:
-            if self.x + pos_f[0] < pos[0] < self.x + pos_f[0] + self.size_f and\
+            if self.x + pos_f[0] < pos[0] < self.x + pos_f[0] + self.size_f and \
                     self.y + pos_f[1] < pos[1] < self.y + pos_f[1] + self.size_f:
                 return number_filter
             number_filter += 1

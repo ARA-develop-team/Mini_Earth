@@ -19,7 +19,7 @@ import perlin_noise
 
 from decorators import ProgressBar
 from parser import parse_data
-from class_block import CBlock
+from class_block import Block
 from planet import Planet
 
 print("Hello from the ARA development. https://github.com/ARA-develop-team")
@@ -31,8 +31,6 @@ class Simulation(object):
         self.run = True
 
         data = parse_data('data.yml')
-        if not data:
-            quit()
 
         self.active_filter = 0
         self.filters = data['filters']
@@ -47,6 +45,7 @@ class Simulation(object):
         self.camera = None
 
         self.world = self.create_world(data['grid_value'], data['octave_value'])
+        self.map = []  # list with colors
 
         pygame.init()
         self.window = pygame.display.set_mode(self.window_size)
@@ -58,20 +57,31 @@ class Simulation(object):
         """Main function."""
 
         while self.run:
+            self.map.clear()
             self.input_process()
+
+            filter_function = select_filter_function(self.filters[self.active_filter])
+            self.world.iteration(self.map, filter_function)
+
             self.draw_world()
 
-    def temp(self):
-        for line in self.world.block_list:
-            for block in line:
-                block.draw(self.window, block.x, block.y, block.size, self.world.highest_point,
-                           self.filters[self.active_filter])
+    def draw_map(self):
+        """Draw list of colors."""
+
+        color_counter = 0
+        for y in range(self.block_num_vertical):
+            y = y * self.block_size
+
+            for x in range(self.block_num_horizontal):
+                x = x * self.block_size
+                pygame.draw.rect(self.window, self.map[color_counter], (x, y, self.block_size, self.block_size))
+                color_counter += 1
 
     def draw_world(self):
         """Draw the World using pygame."""
 
         self.window.fill((47, 79, 79))
-        self.temp()
+        self.draw_map()
         pygame.display.flip()
 
     def input_process(self):
@@ -86,6 +96,8 @@ class Simulation(object):
 
         blocks = self.create_blocks(*args)
         highest_point = find_highest_block(blocks)
+        Block.highest_point = highest_point
+
         world = Planet(blocks, self.block_num_horizontal, self.block_num_vertical, self.block_size, highest_point)
 
         return world
@@ -116,7 +128,7 @@ class Simulation(object):
             for octave in octave_list:
                 height_block += octave / 2
 
-            block = CBlock(x, y, self.block_size, height_block, 0, 10, -50, 10)
+            block = Block(x, y, self.block_size, height_block, 0, 10, -50, 10)
             return block
 
         # Code of creation.
@@ -137,6 +149,28 @@ class Simulation(object):
         return blocks
 
 
+def select_filter_function(current_filter):
+    """Choose function, which is responsible for current filter."""
+
+    if current_filter == "perlin noise":
+        return Block.draw_perlin_noise
+
+    elif current_filter == "elevation map":
+        return Block.draw_elevation_map
+
+    elif current_filter == "waves map color":
+        return Block.draw_waves_map_color
+
+    elif current_filter == "waves map wb":
+        return Block.draw_waves_map_wb
+
+    elif current_filter == "temperature air":
+        return Block.draw_temperature_air
+
+    else:
+        raise NameError
+
+
 def find_highest_block(blocks):
     """Find the highest block in the world."""
 
@@ -151,14 +185,14 @@ def find_highest_block(blocks):
 
 
 def save(data):
-    """Save simulation for reopening"""
+    """Save simulation for reopening."""
 
     with open('world.pkl', 'wb') as file:
         pickle.dump(data, file, pickle.HIGHEST_PROTOCOL)
 
 
 def load():
-    """Load last closed simulation"""
+    """Load last closed simulation."""
 
     with open('world.pkl', 'rb') as file:
         return pickle.load(file)
@@ -169,14 +203,6 @@ if __name__ == '__main__':
     simulation = Simulation()
     simulation.main()
 
-    # simulation.main()
-
-    # def create_word_with_perlin_noise(self):
-    #     pass
-    #
-    # def draw_menu(self):
-    #     pass
-    #
     # def input_mouse(self):
     #
     #     for e in pygame.event.get():  # проверка нажатий
@@ -193,20 +219,4 @@ if __name__ == '__main__':
     #         #         if length_cam > 1 and height_cam > 1:
     #         #
     #         #     if e.button == 5:
-    #
-    #
-    # def input_keyboard(self):
-    #     keys = pygame.key.get_pressed()
-    #     # if keys[pygame.K_d]:
-    #     #
-    #     # if keys[pygame.K_a]:
-    #     #
-    #     # if keys[pygame.K_w]:
-    #     #
-    #     # if keys[pygame.K_s]:
-    #     #
-    #     # if keys[pygame.K_r]:
-    #     #
-    #     # if keys[pygame.K_f]:
-    #     #
     #

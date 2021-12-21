@@ -1,6 +1,6 @@
 import pygame
 import threading
-from class_block import CBlock
+from class_block import Block
 import perlin_noise
 import functions_of_interaction_between_blocks as fibb
 import time
@@ -88,7 +88,7 @@ for column in range(num_vertical):
 
         height_block = (octave1 / 2) + (octave2 / 2) + (octave3 / 2)
 
-        block_list.append(CBlock(new_x, new_y, 10, height_block, 0, 10, -50, 10))
+        block_list.append(Block(new_x, new_y, 10, height_block, 0, 10, -50, 10))
         if height_block > highest_point:
             highest_point = height_block
 
@@ -134,6 +134,7 @@ while run:
             if e.button == 1:
                 panel.press_buttons(e.pos)
                 filter = panel.press_filter_buttons(e.pos, filter)
+
 
         if e.type == pygame.MOUSEBUTTONDOWN:
             if e.button == 4:

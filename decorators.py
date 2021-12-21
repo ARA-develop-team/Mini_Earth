@@ -30,7 +30,7 @@ class ProgressBar:
 
 def show_palette():
     import pygame
-    from class_block import CBlock
+    from colors import colorbox
 
     screen_size = (600, 500)
 
@@ -40,12 +40,12 @@ def show_palette():
     pygame.display.set_caption('PALETTE TESTER')
     font = pygame.font.SysFont('Comic Sans MS', 30)
 
-    colorbox = CBlock.colorbox
-    colorbox_keys_class = colorbox.keys()
-    colorbox_keys = []
-
-    for color in colorbox_keys_class:
-        colorbox_keys.append(color)
+    # colorbox = CBlock.colorbox
+    # colorbox_keys_class = colorbox.keys()
+    # colorbox_keys = []
+    #
+    # for color in colorbox_keys_class:
+    #     colorbox_keys.append(color)
 
     done = False
     key = 0

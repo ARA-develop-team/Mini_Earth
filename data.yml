@@ -12,4 +12,4 @@ block_size: 10
 
 # for map generation
 grid_value: [5, 10, 15]  # grid number, default [5, 10, 15]
-octave_value: [20, 13, 15]  # map pixel size (len >= len(grid_value)), default [20, 10, 13]
+octave_value: [20, 13, 15]  # map pixel size (len >= len(grid_value)!), default [20, 10, 13]

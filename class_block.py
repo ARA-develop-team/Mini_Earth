@@ -1,83 +1,73 @@
 import pygame
+from colors import colors
 
 
-class CBlock(object):
-    colorbox = {"Traffic blue": (6, 57, 113),
-                "Cobalt blue": (0, 71, 171),
-                "Green-blue Crayola": (17, 100, 180),
-                "Blue Klein": (58, 117, 196),
-                "Blue-gray Crayola": (102, 153, 204),
-
-                "Dark spring green": (0, 100, 0),
-                "Pearl green": (0, 70, 0),
-                "Green": (0, 128, 0),
-                "Muslim green": (0, 153, 0),
-                "Verdejo green": (52, 201, 36),
-                "Pear green": (209, 226, 49),
-                "Golden birch": (218, 165, 32),
-                "Redhead": (215, 125, 49),
-
-                "Bittersweet": (255, 131, 115),
-                "Red-orange Crayola": (255, 83, 73),
-                "Scarlet": (255, 36, 0),
-                "Neon carrot": (255, 163, 67),
-                "Lemon-yellow Crayola": (255, 244, 79),
-                "Moderate aquamarine": (102, 205, 170),
-                "Blue screen of death": (18, 47, 170),
-                "Gray squirrel": (120, 133, 139),
-                "Yellow ocher": (174, 160, 75),
-                "Byzantine": (210, 53, 210),
-                "Dark magenta": (139, 0, 139),
-                "Byzantium": (112, 41, 99)}
+class Block(object):
+    colorbox = colors
+    highest_point = None
 
     def __init__(self, x, y, size, height_ground, height_water, temp_surface, temp_air, clouds):
-        self.x = x
-        self.y = y
-        self.size = size
+        # self.x = x
+        # self.y = y
+        # self.size = size
         self.height_ground = height_ground
         self.height_water = height_water
-        self.temp_surface = temp_surface
+        # self.temp_surface = temp_surface
         self.temp_air = temp_air
-        self.future_temp_air = 0
-        self.cloud_concentration = clouds
-        self.vegetation = []
-        self.isDay = True
-        self.filter = "waves map"
-        self.wave_counter = 0
-        self.future_hw = 0
+        # self.future_temp_air = 0
+        # self.cloud_concentration = clouds
+        # self.vegetation = []
+        # self.isDay = True
+        # self.filter = "waves map"
+        # self.wave_counter = 0
+        # self.future_hw = 0
 
-    def draw(self, screen, x, y, size, highest_point, filter):
-        color = (0, 0, 0)
-        self.filter = filter
+    # def assignment_of_values(self):
+    #     self.height_water += self.future_hw
+    #     self.future_hw = 0
+    #
+    #     self.temp_air += self.future_temp_air
+    #     self.future_temp_air = 0
+    #
+    # def pib(self):
+    #     temp_difference = self.temp_surface - self.temp_air
+    #     self.temp_air += (temp_difference * 20) / 100
+    #     self.temp_surface -= (temp_difference * 5) / 100
 
-        if self.filter == "perlin noise":
-            rgb = int(self.draw_perlin_noise(highest_point))
-            color = (rgb, rgb, rgb)
+    # def draw(self, screen, x, y, size, highest_point, filter):
+    #     color = (0, 0, 0)
+    #     self.filter = filter
+    #
+    #     if self.filter == "perlin noise":
+    #         color = self.draw_perlin_noise()
+    #
+    #     if self.filter == "elevation map":
+    #         color = self.draw_elevation_map()
+    #
+    #     if self.filter == "waves map color":
+    #         color = self.draw_waves_map_color()
+    #
+    #     if self.filter == "waves map wb":
+    #         color = self.draw_waves_map_wb()
+    #
+    #     if self.filter == "temperature air":
+    #         color = self.draw_temperature_air()
+    #
+    #     pygame.draw.rect(screen, color, (x, y, size, size))
 
-        if self.filter == "elevation map":
-            color = self.draw_elevation_map()
-
-        if self.filter == "waves map color":
-            color = self.draw_waves_map_color()
-
-        if self.filter == "waves map wb":
-            color = self.draw_waves_map_wb()
-
-        if self.filter == "temperature air":
-            color = self.draw_temperature_air()
-
-        pygame.draw.rect(screen, color, (x, y, size, size))
-
-    def draw_perlin_noise(self, highest_point):
+    def draw_perlin_noise(self):
         if self.height_ground < 1:
             self.height_ground = 1
 
-        percent = (self.height_ground * 100) / highest_point
-        return (255 * percent) / 100
+        percent = (self.height_ground * 100) / self.highest_point
+
+        rgb = int((255 * percent) / 100)
+        color = (rgb, rgb, rgb)
+        return color
 
     def draw_elevation_map(self):
-
         variation = 18    # height difference of place
+
         if self.height_water > 0:
             if self.height_water < variation:
                 color = self.colorbox["Blue-gray Crayola"]
@@ -111,6 +101,7 @@ class CBlock(object):
     def draw_waves_map_color(self):
         water_level = 150
         variation = 20
+
         if self.height_water > 0:
             if self.wave_counter > 30:
                 color = self.colorbox["Scarlet"]
@@ -153,6 +144,7 @@ class CBlock(object):
     def draw_waves_map_wb(self):
         water_level = 150
         variation = 20
+
         if self.height_water > 0:
             rgb = (255 / 50) * self.wave_counter
             if rgb > 255:
@@ -160,6 +152,7 @@ class CBlock(object):
             if rgb < 0:
                 rgb = 0
             color = (rgb, rgb, rgb)
+
         else:
             elevation = self.height_ground - water_level
             if elevation < variation:
@@ -184,6 +177,7 @@ class CBlock(object):
             if rgb < 0:
                 rgb = 0
             color = (rgb, 0, 0)
+
         else:
             rgb = (255 / 30) * abs(self.temp_air)
             if rgb > 255:
@@ -193,14 +187,4 @@ class CBlock(object):
             color = (0, 0, rgb)
         return color
 
-    def assignment_of_values(self):
-        self.height_water += self.future_hw
-        self.future_hw = 0
 
-        self.temp_air += self.future_temp_air
-        self.future_temp_air = 0
-
-    def pib(self):
-        temp_difference = self.temp_surface - self.temp_air
-        self.temp_air += (temp_difference * 20) / 100
-        self.temp_surface -= (temp_difference * 5) / 100

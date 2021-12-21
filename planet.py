@@ -8,6 +8,15 @@ class Planet(object):
         self.num_vertical = num_vertical
         self.highest_point = highest
 
+    def iteration(self, color_map, current_filter):
+        """Calculate all logic contain to world."""
+
+        for line in self.block_list:
+            for block in line:
+
+                block_color = set_colors(block, current_filter)
+                color_map.append(block_color)
+
     def fibb_main(self):
         for number in range(len(self.block_list)):
             if number % self.num_horizontal == self.num_horizontal - 1:
@@ -55,3 +64,10 @@ def water_flow_between_block(block1, block2):
         return 0
     else:
         return abs(difference)
+
+
+def set_colors(block, filter_func):
+    """Define colors for all blocks"""
+
+    color = filter_func(block)
+    return color
