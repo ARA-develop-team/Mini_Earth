@@ -1,34 +1,39 @@
 import pygame
 from colors import colors
+from colour import Color
 
 
 class Block(object):
     colorbox = colors
     highest_point = None
 
-    def __init__(self, x, y, size, height_ground, height_water, temp_surface, temp_air, clouds):
+    def __init__(self, x, y, size, height_ground, height_water, temp_surface, temp_air, clouds, color):
+        self.color = color
+        self.height_ground = height_ground
+
+        self.height_water = height_water
+        self.future_height_water = 0
+
+        self.temp_air = temp_air
+
         # self.x = x
         # self.y = y
         # self.size = size
-        self.height_ground = height_ground
-        self.height_water = height_water
         # self.temp_surface = temp_surface
-        self.temp_air = temp_air
         # self.future_temp_air = 0
         # self.cloud_concentration = clouds
         # self.vegetation = []
         # self.isDay = True
         # self.filter = "waves map"
         # self.wave_counter = 0
-        # self.future_hw = 0
 
-    # def assignment_of_values(self):
-    #     self.height_water += self.future_hw
-    #     self.future_hw = 0
-    #
-    #     self.temp_air += self.future_temp_air
-    #     self.future_temp_air = 0
-    #
+    def update_data(self):
+        self.height_water += self.future_height_water
+        self.future_height_water = 0
+
+        # self.temp_air += self.future_temp_air
+        # self.future_temp_air = 0
+
     # def pib(self):
     #     temp_difference = self.temp_surface - self.temp_air
     #     self.temp_air += (temp_difference * 20) / 100
@@ -55,6 +60,29 @@ class Block(object):
     #
     #     pygame.draw.rect(screen, color, (x, y, size, size))
 
+    def draw_test(self):
+        variation = int(self.highest_point)
+        green = Color("green")
+        gradient = list(green.range_to(Color("red"), int(self.highest_point)+10))
+        color = gradient[int(self.height_ground) - 1]
+        # if self.height_ground < variation * 2:
+        #     color = gradient[0]
+        # elif self.height_ground < variation * 4:
+        #     color = gradient[1]
+        # elif self.height_ground < variation * 6:
+        #     color = gradient[2]
+        # elif self.height_ground < variation * 8:
+        #     color = gradient[3]
+        # elif self.height_ground < variation * 10:
+        #     color = gradient[4]
+        # elif self.height_ground < variation * 12:
+        #     color = gradient[5]
+        # elif self.height_ground < variation * 14:
+        #     color = gradient[6]
+        # else:
+        #     color = gradient[7]
+        return str(color)
+
     def draw_perlin_noise(self):
         if self.height_ground < 1:
             self.height_ground = 1
@@ -66,7 +94,7 @@ class Block(object):
         return color
 
     def draw_elevation_map(self):
-        variation = 18    # height difference of place
+        variation = 18  # height difference of place
 
         if self.height_water > 0:
             if self.height_water < variation:
@@ -186,5 +214,3 @@ class Block(object):
                     rgb = 0
             color = (0, 0, rgb)
         return color
-
-

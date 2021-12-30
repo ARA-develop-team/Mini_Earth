@@ -8,15 +8,15 @@ def water_flow(block1, block2):
         flow = difference * 0.2
         if block1.height_water < flow:
             flow = block1.height_water * 0.2
-            block1.future_hw -= flow
-            block2.future_hw += flow
+            block1.future_height_water -= flow
+            block2.future_height_water += flow
 
         # if flow < 0.01:
         #      block1.future_hw -= block1.height_water
         #      block2.future_hw += block1.height_water
         else:
-            block1.future_hw -= flow
-            block2.future_hw += flow
+            block1.future_height_water -= flow
+            block2.future_height_water += flow
             #print("кординати 1 - {}, кординати 2 - {}, флоу - {}".format([block1.x, block1.y], [block2.x, block2.y], flow))
 
     if block2.height_water == 0:

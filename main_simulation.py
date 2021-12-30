@@ -12,7 +12,6 @@ For a better understanding of each other, I propose you such an agreement:
       delete in the future. Normal comments leave with no changes :)
 """
 
-import time
 import pygame
 import pickle
 import perlin_noise
@@ -44,24 +43,25 @@ class Simulation(object):
 
         self.camera = None
 
-        self.world = self.create_world(data['grid_value'], data['octave_value'])
         self.map = []  # list with colors
+        self.world = self.create_world(data['grid_value'], data['octave_value'])
 
         pygame.init()
         self.window = pygame.display.set_mode(self.window_size)
-        pygame.display.set_caption('Mini Earth')
+        # pygame.display.set_caption('Mini Earth')
+
+        self.clock = pygame.time.Clock()
 
         del data
 
     def main(self):
         """Main function."""
-
+        self.world.block_list[50][80].height_water = 100000
         while self.run:
-            self.map.clear()
             self.input_process()
 
             filter_function = select_filter_function(self.filters[self.active_filter])
-            self.world.iteration(self.map, filter_function)
+            self.world.iteration(filter_function)
 
             self.draw_world()
 
@@ -74,11 +74,14 @@ class Simulation(object):
 
             for x in range(self.block_num_horizontal):
                 x = x * self.block_size
-                pygame.draw.rect(self.window, self.map[color_counter], (x, y, self.block_size, self.block_size))
+
+                pygame.draw.rect(self.window, self.map[color_counter][0], (x, y, self.block_size, self.block_size))
                 color_counter += 1
 
     def draw_world(self):
         """Draw the World using pygame."""
+        self.clock.tick()
+        pygame.display.set_caption(f"FPS: {self.clock.get_fps()}")
 
         self.window.fill((47, 79, 79))
         self.draw_map()
@@ -89,6 +92,11 @@ class Simulation(object):
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                water = 0
+                for line in self.world.block_list:
+                    for block in line:
+                        water += block.height_water
+                print(water)
                 self.run = False
 
     def create_world(self, *args):
@@ -113,6 +121,10 @@ class Simulation(object):
             grid = perlin_noise.create_random_grid(grid_size)
             return grid
 
+        def deploy_to_map():
+            default_color = (0, 0, 0)
+            self.map.append([default_color])
+
         @ProgressBar(text='Creating Blocks', aim=(self.block_num_horizontal * self.block_num_vertical))
         def create_block():
             octave_list = []
@@ -128,7 +140,15 @@ class Simulation(object):
             for octave in octave_list:
                 height_block += octave / 2
 
-            block = Block(x, y, self.block_size, height_block, 0, 10, -50, 10)
+            block = Block(x, y, self.block_size, height_block, 0, 10, -50, 10, self.map[-1])
+
+            # # ---
+            # if len(blocks[-1]) == self.block_num_horizontal - 30:
+            #     block = Block(x, y, self.block_size, 100, 0, 10, -50, 10, self.map[-1])
+            # else:
+            #     block = Block(x, y, self.block_size, 10, 0, 10, -50, 10, self.map[-1])
+            # # ---
+
             return block
 
         # Code of creation.
@@ -143,6 +163,7 @@ class Simulation(object):
             for x in range(self.block_num_horizontal):
                 x = x * self.block_size
 
+                deploy_to_map()
                 new_block = create_block()
                 blocks[-1].append(new_block)
 
@@ -202,6 +223,44 @@ if __name__ == '__main__':
     print("\nWelcome to the World!")
     simulation = Simulation()
     simulation.main()
+
+    # def preparing_blocks(blocks):
+    #     """Find the highest block in the world and find block's neighbors."""
+    #     highest = 0
+    #
+    #     for y in range(len(blocks)):
+    #         for x in range(len(blocks[y])):
+    #             block = blocks[y][x]
+    #
+    #             # top and bottom neighbors
+    #             if y == 0:
+    #                 block.neighbors.append(blocks[y + 1][x])
+    #
+    #             elif y == len(blocks) - 1:
+    #                 block.neighbors.append(blocks[y - 1][x])
+    #
+    #             else:
+    #                 block.neighbors.append(blocks[y - 1][x])
+    #                 block.neighbors.append(blocks[y + 1][x])
+    #
+    #             # left and right neighbors
+    #             if x == 0:
+    #                 block.neighbors.append(blocks[y][x + 1])
+    #                 block.neighbors.append(blocks[y][len(blocks[y]) - 1])
+    #
+    #             elif x == len(blocks[y]) - 1:
+    #                 block.neighbors.append(blocks[y][x - 1])
+    #                 block.neighbors.append(blocks[y][0])
+    #
+    #             else:
+    #                 block.neighbors.append(blocks[y][x + 1])
+    #                 block.neighbors.append(blocks[y][x - 1])
+    #
+    #             # check if highest block
+    #             if block.height_ground > highest:
+    #                 highest = block.height_ground
+
+    # return highest
 
     # def input_mouse(self):
     #
