@@ -6,8 +6,8 @@ window_y: 1000
 camera_x: 0
 camera_y: 0
 
-block_num_columns: 100  # horizontal number of blocks
-block_num_rows: 100   # vertical number of blocks
+block_num_columns: 1000  # horizontal number of blocks
+block_num_rows: 1000   # vertical number of blocks
 block_size: 10
 
 # for map generation

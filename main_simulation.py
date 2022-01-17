@@ -15,13 +15,16 @@ For a better understanding of each other, I propose you such an agreement:
 import pygame
 import pickle
 import perlin_noise
+# import analysis
 
 from decorators import ProgressBar
 from parser import parse_data
 from class_block import Block
 from planet import Planet
 
+
 print("Hello from the ARA development. https://github.com/ARA-develop-team")
+pygame.init()
 
 
 class Simulation(object):
@@ -46,7 +49,7 @@ class Simulation(object):
         self.map = []  # list with colors
         self.world = self.create_world(data['grid_value'], data['octave_value'])
 
-        pygame.init()
+
         self.window = pygame.display.set_mode(self.window_size)
         # pygame.display.set_caption('Mini Earth')
 
@@ -80,7 +83,7 @@ class Simulation(object):
 
     def draw_world(self):
         """Draw the World using pygame."""
-        self.clock.tick()
+        self.clock.tick(30)
         pygame.display.set_caption(f"FPS: {self.clock.get_fps()}")
 
         self.window.fill((47, 79, 79))
@@ -92,11 +95,6 @@ class Simulation(object):
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                water = 0
-                for line in self.world.block_list:
-                    for block in line:
-                        water += block.height_water
-                print(water)
                 self.run = False
 
     def create_world(self, *args):
@@ -169,6 +167,16 @@ class Simulation(object):
 
         return blocks
 
+    def closing(self):
+        water = 0
+        height_list = []
+        for line in self.world.block_list:
+            for block in line:
+                water += block.height_water
+                height_list.append(block.height_water)
+        print(water)
+        pygame.quit()
+
 
 def select_filter_function(current_filter):
     """Choose function, which is responsible for current filter."""
@@ -221,8 +229,12 @@ def load():
 
 if __name__ == '__main__':
     print("\nWelcome to the World!")
+
     simulation = Simulation()
     simulation.main()
+
+    simulation.closing()
+    # analysis.show_graph([3, 3, 3, 5])
 
     # def preparing_blocks(blocks):
     #     """Find the highest block in the world and find block's neighbors."""
