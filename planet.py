@@ -57,67 +57,17 @@ def interaction_between_blocks(block, neighbors):
 
 def water_flow_between_block(block1, block2):
     if block1.height_water > 1 or block2.height_water > 1:
-        ground_difference = block1.height_ground - block2.height_ground
-        water_difference = block1.height_water - block2.height_water
-        difference = ground_difference + water_difference
+        # ground_difference = block1.height_ground - block2.height_ground
+        # water_difference = block1.height_water - block2.height_water
+        # difference = ground_difference + water_difference
 
-        if difference > 1 or difference < -1:
+        difference = (block1.height_ground + block1.height_water) - (block2.height_ground + block2.height_water)
 
-            flow = difference * .1
+        # if difference > 1 or difference < -1:
 
-            # if -30 < flow < 30:
-            block1.future_height_water -= flow
-            block2.future_height_water += flow
-
-            # elif flow > 30:
-            #     flow *= .2
-            #     block1.future_height_water -= flow
-            #     block2.future_height_water += flow
-            #
-            # elif flow < -30:
-            #     flow *= .2
-            #     block1.future_height_water -= flow
-            #     block2.future_height_water += flow
-
-
-
-        # difference = (block1.height_ground + block1.height_water) \
-        #              - (block2.height_ground + block2.height_water)
-        #
-        # flow = difference * 0.2
-        # if flow >
-
-        # if difference >= 0:
-        #     flow = difference
-        #     # flow = difference * 0.2
-        #     # if block1.height_water < flow:
-        #     #     block1.future_height_water -= block1.height_water
-        #     #     block2.future_height_water += block1.height_water
-        #
-        #     if block1.height_water < flow:
-        #         # flow = block1.height_water * 0.2
-        #         block1.future_height_water -= flow
-        #         block2.future_height_water += flow
-        #
-        #     else:
-        #         block1.future_height_water -= flow
-        #         block2.future_height_water += flow
-        #
-        # if difference < 0:
-        #     flow = difference
-        #     # flow = (difference ) * 0.2
-        #     # if block2.height_water < flow:
-        #     #     block2.future_height_water -= block2.height_water
-        #     #     block1.future_height_water += block2.height_water
-        #
-        #     if block1.height_water < flow:
-        #         # flow = block1.height_water * 0.2
-        #         block1.future_height_water -= flow
-        #         block2.future_height_water += flow
-        #
-        #     else:
-        #         block2.future_height_water -= flow
-        #         block1.future_height_water += flow
+        flow = difference * .2
+        block1.future_height_water -= flow
+        block2.future_height_water += flow
 
 
 def old_water_flow_between_block(block1, block2):

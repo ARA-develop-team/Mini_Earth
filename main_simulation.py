@@ -51,7 +51,6 @@ class Simulation(object):
         self.map = []  # list with colors
         self.world = self.create_world(data['grid_value'], data['octave_value'])
 
-
         self.window = pygame.display.set_mode(self.window_size)
         # pygame.display.set_caption('Mini Earth')
 
@@ -61,9 +60,10 @@ class Simulation(object):
 
     def main(self):
         """Main function."""
-        self.world.block_list[50][80].height_water = 100000
+        # self.world.block_list[50][80].height_water = 100000
         while self.run:
             self.input_process()
+            # self.world.block_list[30][50].height_water += 2
 
             filter_function = select_filter_function(self.filters[self.active_filter])
             self.world.iteration(filter_function)
