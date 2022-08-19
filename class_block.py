@@ -1,6 +1,6 @@
 import pygame
 from colors import colors
-from colour import Color
+#from colour import Color
 
 
 class Block(object):

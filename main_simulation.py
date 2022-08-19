@@ -15,16 +15,18 @@ For a better understanding of each other, I propose you such an agreement:
 import pygame
 import pickle
 import perlin_noise
+import test
 # import analysis
 
 from decorators import ProgressBar
-from parser import parse_data
+#from parser import parse_data
 from class_block import Block
 from planet import Planet
 
 
 print("Hello from the ARA development. https://github.com/ARA-develop-team")
 pygame.init()
+parse_data = test.parse_data
 
 
 class Simulation(object):
@@ -83,7 +85,7 @@ class Simulation(object):
 
     def draw_world(self):
         """Draw the World using pygame."""
-        self.clock.tick(30)
+        self.clock.tick()
         pygame.display.set_caption(f"FPS: {self.clock.get_fps()}")
 
         self.window.fill((47, 79, 79))
